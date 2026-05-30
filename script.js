@@ -1,6 +1,6 @@
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
-canvas.width = 300;
+canvas.width = 800;
 canvas.height = 550;
 canvas.style.border = "2px solid black";
 canvas.style.margin = "30px auto";
@@ -32,14 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("keydown", (event) => {
         if (event.code === "Space" && isStart === false) {
-            bird.flapAudio.cloneNode().play();
-            context.fillStyle = "blue";
-            isStart = true;
-            bird.velocityY = -5;
-            bird.positionY = 100;
-            clearPipes();
-            generatePipes();
-            startGame();
+            prepareGame();
 
             return;
         }
@@ -112,4 +105,15 @@ function loadAudio() {
     bird.hitGroundAudio = new Audio("./sounds/hit-ground.wav");
     bird.flapAudio = new Audio("./sounds/bird-flap.wav");
     gameOverAudio = new Audio("./sounds/gameover.wav");
+}
+
+function prepareGame() {
+    bird.flapAudio.cloneNode().play();
+    context.fillStyle = "blue";
+    isStart = true;
+    bird.velocityY = -5;
+    bird.positionY = 100;
+    clearPipes();
+    generatePipes();
+    startGame();
 }
