@@ -14,6 +14,7 @@ const minPipeHeight = 20;
 const pipeGap = 155;
 const pipeWidth = 70;
 const maxPipeHeight = canvas.height - pipeGap - minPipeHeight;
+const pipeSpawnRange = [(canvas.width / 2) - 4, canvas.width / 2];
 
 const bird = {
     positionX: 100,
@@ -64,21 +65,28 @@ function startGame() {
     bird.velocityY += bird.gravity;
     bird.positionY += bird.velocityY;
 
-    pipes[0].x -= 3;
-
-    if (pipes[0].x + pipes[0].width < 0) {
-        pipes.shift();
-        generatePipes();
-    }
-
     context.fillRect(bird.positionX, bird.positionY, 50, 50);
-    context.fillRect(pipes[0].x, pipes[0].y, pipes[0].width, pipes[0].height); // pipe atas
-    context.fillRect(
-        pipes[0].x,
-        (pipes[0].height + pipes[0].gap),
-        pipes[0].width,
-        canvas.height - (pipes[0].height + pipes[0].gap)
-    ); //  pipe bawah
+
+    for (let i = 0; i < pipes.length; i++) {
+        if (pipes[i].x > pipeSpawnRange[0] && pipes[i].x < pipeSpawnRange[1]) {
+            generatePipes();
+            console.log(pipes);
+        }
+
+        if (pipes[i].x + pipes[i].width < 0) {
+            pipes.splice(i, 1);
+        }
+
+        pipes[i].x -= 2;
+
+        context.fillRect(pipes[i].x, pipes[i].y, pipes[i].width, pipes[i].height); // pipe atas
+        context.fillRect(
+            pipes[i].x,
+            (pipes[i].height + pipes[i].gap),
+            pipes[0].width,
+            canvas.height - (pipes[i].height + pipes[i].gap)
+        ); //  pipe bawah
+    }
 
     requestAnimationFrame(startGame);
 }
@@ -113,6 +121,7 @@ function prepareGame() {
     isStart = true;
     bird.velocityY = -5;
     bird.positionY = 100;
+
     clearPipes();
     generatePipes();
     startGame();
