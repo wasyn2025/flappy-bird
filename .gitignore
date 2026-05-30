@@ -1,2 +1,5 @@
 index2.html
 note.txt
+node_modules/
+package-lock.json
+package.json
