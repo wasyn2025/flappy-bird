@@ -1,7 +1,7 @@
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
-canvas.width = 900;
-canvas.height = 500;
+canvas.width = 300;
+canvas.height = 550;
 canvas.style.border = "2px solid black";
 canvas.style.margin = "30px auto";
 canvas.style.display = "block";
@@ -10,6 +10,10 @@ let gameOverAudio = null;
 let birdPositionY = 0;
 let isStart = false;
 const pipes = [];
+const minPipeHeight = 20;
+const pipeGap = 155;
+const pipeWidth = 70;
+const maxPipeHeight = canvas.height - pipeGap - minPipeHeight;
 
 const bird = {
     positionX: 100,
@@ -67,7 +71,7 @@ function startGame() {
     bird.velocityY += bird.gravity;
     bird.positionY += bird.velocityY;
 
-    pipes[0].x -= 5;
+    pipes[0].x -= 3;
 
     if (pipes[0].x + pipes[0].width < 0) {
         pipes.shift();
@@ -75,21 +79,28 @@ function startGame() {
     }
 
     context.fillRect(bird.positionX, bird.positionY, 50, 50);
-    context.fillRect(pipes[0].x, pipes[0].y, pipes[0].width, pipes[0].height);
+    context.fillRect(pipes[0].x, pipes[0].y, pipes[0].width, pipes[0].height); // pipe atas
+    context.fillRect(
+        pipes[0].x,
+        (pipes[0].height + pipes[0].gap),
+        pipes[0].width,
+        canvas.height - (pipes[0].height + pipes[0].gap)
+    ); //  pipe bawah
 
     requestAnimationFrame(startGame);
 }
 
 function generatePipes() {
-    const pipeWidth = 70;
-    const pipeGap = 150;
-    const pipeHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 100)) + 150;
+    const pipeHeight = Math.floor(
+        Math.random() * (maxPipeHeight - minPipeHeight) + minPipeHeight
+    );
 
     pipes.push({
         x: canvas.width,
         y: 0,
         width: pipeWidth,
         height: pipeHeight,
+        gap: pipeGap,
     });
 }
 
