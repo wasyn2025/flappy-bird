@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+canvas[id="game"] {
+    display: block;
+    margin: 20px auto;
+    border: 2px solid black;
+}
