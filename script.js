@@ -8,6 +8,7 @@ let isGameOver = false;
 let gameOverReason = "";
 let gameOverDelay = false;
 let score = 0;
+let highscore = 0;
 const pipes = [];
 const minPipeHeight = 20;
 const pipeGap = 160;
@@ -82,6 +83,7 @@ function startGame() {
 
         requestAnimationFrame(startGame);
     } else {
+        highScore = score;
         isStart = false;
         gameOverDelay = true;
         gameOverReason === "pipe" ?
@@ -119,8 +121,8 @@ function updateGame() {
 
             if (checkScore(pipes[i]) === true) {
                 audio.scoreAudio.cloneNode().play();
-                score++;
                 pipes[i].passed = true;
+                score++;
             }
 
             pipes[i].x -= pipeMoveSpeed;
@@ -129,11 +131,20 @@ function updateGame() {
 }
 
 function drawGame() {
+    drawBird();
+    drawPipe();
+    drawScore();
+}
+
+function drawBird() {
     context.fillStyle = "yellow";
     context.fillRect(bird.positionX, bird.positionY, 50, 50);
+}
 
+function drawPipe() {
     for (let i = 0; i < pipes.length; i++) {
         context.fillStyle = "green";
+
         context.fillRect(pipes[i].x, pipes[i].y, pipes[i].width, pipes[i].height); // pipe atas
         context.fillRect(
             pipes[i].x,
@@ -142,8 +153,6 @@ function drawGame() {
             canvas.height - (pipes[i].height + pipes[i].gap)
         ); //  pipe bawah
     }
-
-    drawScore();
 }
 
 function drawScore() {
@@ -156,6 +165,7 @@ function drawScore() {
     context.lineWidth = 2;
     context.strokeText(score, canvas.width / 2, 50);
 }
+
 
 function isColliding(pipe) {
     const birdRect = {
