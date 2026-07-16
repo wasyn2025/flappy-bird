@@ -1,7 +1,7 @@
 // canvas setup
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
-canvas.width = 800;
+canvas.width = 400;
 canvas.height = 600;
 
 // game state
