@@ -1,14 +1,18 @@
+// canvas setup
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
 canvas.width = 400;
 canvas.height = 600;
 
+// game state
 let isStart = false;
 let isGameOver = false;
 let gameOverReason = "";
 let gameOverDelay = false;
 let score = 0;
-let highscore = 0;
+let highscore = 2;
+
+// pipe stuff
 const pipes = [];
 const minPipeHeight = 20;
 const pipeGap = 160;
@@ -17,7 +21,10 @@ const maxPipeHeight = canvas.height - pipeGap - minPipeHeight;
 const pipeDistance = (canvas.width / 2) <= 300 ? (canvas.width / 2) - 50 : (canvas.width / 2) + 100;
 const pipeMoveSpeed = 2.5;
 const pipeSpawnRange = [pipeDistance - (pipeMoveSpeed + 2), pipeDistance];
+const pipeSpawnPosition = canvas.width + (pipeWidth * 2);
+let pipeGenerated = 0;
 
+// audio collection
 const audio = {
     flapAudio: null,
     hitGroundAudio: null,
@@ -26,6 +33,7 @@ const audio = {
     scoreAudio: null,
 }
 
+// bird stuff
 const bird = {
     positionX: 100,
     positionY: 50,
@@ -71,6 +79,26 @@ function prepareGame() {
     startGame();
 }
 
+function clearPipes() {
+    pipes.length = 0;
+}
+
+function generatePipes() {
+    const pipeHeight = Math.floor(
+        Math.random() * (maxPipeHeight - minPipeHeight) + minPipeHeight
+    );
+
+    pipes.push({
+        x: pipeSpawnPosition,
+        y: 0,
+        width: pipeWidth,
+        height: pipeHeight,
+        gap: pipeGap,
+        passed: false,
+        lastPipe: false,
+    });
+}
+
 function startGame() {
     if (isGameOver === false) {
         if (bird.positionY >= (canvas.height - 50)) {
@@ -108,6 +136,7 @@ function updateGame() {
         for (let i = 0; i < pipes.length; i++) {
             if (pipes[i].x > pipeSpawnRange[0] && pipes[i].x < pipeSpawnRange[1]) {
                 generatePipes();
+                pipeGenerated++;
             }
 
             if (pipes[i].x + pipes[i].width < 0) {
@@ -123,6 +152,10 @@ function updateGame() {
                 audio.scoreAudio.cloneNode().play();
                 pipes[i].passed = true;
                 score++;
+
+                if(score >= (highscore - 1) && score < highscore) {
+                    pipes[i + 1].lastPipe = true;
+                }
             }
 
             pipes[i].x -= pipeMoveSpeed;
@@ -143,7 +176,11 @@ function drawBird() {
 
 function drawPipe() {
     for (let i = 0; i < pipes.length; i++) {
-        context.fillStyle = "green";
+        if(pipes[i].lastPipe === true) {
+            context.fillStyle = "blue";
+        } else {
+            context.fillStyle = "green";
+        }
 
         context.fillRect(pipes[i].x, pipes[i].y, pipes[i].width, pipes[i].height); // pipe atas
         context.fillRect(
@@ -186,25 +223,6 @@ function checkScore(pipe) {
     if (pipe.x + pipe.width < bird.positionX && pipe.passed === false) {
         return true;
     }
-}
-
-function generatePipes() {
-    const pipeHeight = Math.floor(
-        Math.random() * (maxPipeHeight - minPipeHeight) + minPipeHeight
-    );
-
-    pipes.push({
-        x: canvas.width,
-        y: 0,
-        width: pipeWidth,
-        height: pipeHeight,
-        gap: pipeGap,
-        passed: false,
-    });
-}
-
-function clearPipes() {
-    pipes.length = 0;
 }
 
 function loadAudio() {
