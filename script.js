@@ -1,7 +1,7 @@
 // canvas setup
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
-canvas.width = 400;
+canvas.width = 800;
 canvas.height = 600;
 
 // game state
@@ -10,7 +10,7 @@ let isGameOver = false;
 let gameOverReason = "";
 let gameOverDelay = false;
 let score = 0;
-let highscore = 2;
+let highscore = 0;
 
 // pipe stuff
 const pipes = [];
@@ -89,7 +89,7 @@ function generatePipes() {
     );
 
     pipes.push({
-        x: pipeSpawnPosition,
+        x: canvas.width,
         y: 0,
         width: pipeWidth,
         height: pipeHeight,
@@ -111,7 +111,8 @@ function startGame() {
 
         requestAnimationFrame(startGame);
     } else {
-        highScore = score;
+        highscore = score > highscore ? score : highscore;
+        pipeGenerated = 0;
         isStart = false;
         gameOverDelay = true;
         gameOverReason === "pipe" ?
@@ -137,6 +138,10 @@ function updateGame() {
             if (pipes[i].x > pipeSpawnRange[0] && pipes[i].x < pipeSpawnRange[1]) {
                 generatePipes();
                 pipeGenerated++;
+
+                if (pipeGenerated >= (highscore - 1) && pipeGenerated < highscore) {
+                    pipes[i + 1].lastPipe = true;
+                }
             }
 
             if (pipes[i].x + pipes[i].width < 0) {
@@ -152,10 +157,6 @@ function updateGame() {
                 audio.scoreAudio.cloneNode().play();
                 pipes[i].passed = true;
                 score++;
-
-                if(score >= (highscore - 1) && score < highscore) {
-                    pipes[i + 1].lastPipe = true;
-                }
             }
 
             pipes[i].x -= pipeMoveSpeed;
@@ -176,8 +177,8 @@ function drawBird() {
 
 function drawPipe() {
     for (let i = 0; i < pipes.length; i++) {
-        if(pipes[i].lastPipe === true) {
-            context.fillStyle = "blue";
+        if (pipes[i].lastPipe === true) {
+            context.fillStyle = "gold";
         } else {
             context.fillStyle = "green";
         }
