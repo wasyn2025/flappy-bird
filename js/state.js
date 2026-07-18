@@ -13,11 +13,12 @@ export const state = {
 
     pipes: [],
     minPipeHeight: 20,
-    pipeGap: 140,
+    pipeGap: 160,
     pipeWidth: 70,
     pipeMoveSpeed: 2.8,
     pipeHitSensitivity: 10,
     pipeGenerated: 0,
+    _pipeSpawnRange: 0,
 
     get maxPipeHeight() {
         return canvas.height - this.pipeGap - this.minPipeHeight;
@@ -30,11 +31,12 @@ export const state = {
     },
 
     get pipeSpawnRange() {
-        return [this.pipeDistance - (this.pipeMoveSpeed + 2), this.pipeDistance];
+        return [Math.abs(this.pipeDistance - 10 + 2), this.pipeDistance]
     },
 
     get pipeSpawnPosition() {
-        return canvas.width + [this.pipeWidth + 2]
+        return canvas.width + (this.pipeWidth + 2)
+        // return canvas.width + (this.pipeWidth * 2)
     },
 
     // bird state

@@ -9,7 +9,7 @@ export function isColliding(pipe) {
         height: state.bird.height
     };
 
-    if (state.bird.positionY >= (canvas.height - 85)) {
+    if (state.bird.positionY >= (canvas.height - 80)) {
         state.isGameOver = true;
         state.gameOverReason = "ground";
     }
@@ -31,6 +31,9 @@ export function isBirdPassed(pipe) {
 
         if (state.score % 10 === 0) {
             sounds.checkpoint.cloneNode().play();
+            state.pipeMoveSpeed = state.pipeMoveSpeed === 3.6 ?
+                Number((state.pipeMoveSpeed + 0.2).toFixed(1)) :
+                state.pipeMoveSpeed;
         } else {
             sounds.score.cloneNode().play();
         }

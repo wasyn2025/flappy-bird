@@ -17,5 +17,6 @@ export function generatePipes() {
         gap: state.pipeGap,
         passed: false,
         lastPipe: false,
+        pipeMove: false,
     });
 }

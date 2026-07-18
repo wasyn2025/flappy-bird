@@ -65,6 +65,7 @@ function startGame() {
             state.highscore;
 
         state.pipeGenerated = 0;
+        state.pipeMoveSpeed = 2.8;
         state.isStart = false;
         state.gameOverDelay = true;
         state.gameOverReason === "pipe" ?
@@ -85,14 +86,26 @@ function updateGame() {
         Util.updateBirdMove();
 
         for (let i = 0; i < state.pipes.length; i++) {
-            if (state.pipes[i].x > state.pipeSpawnRange[0] && state.pipes[i].x < state.pipeSpawnRange[1]) {
+            if (state.pipes[i].x < (canvas.width / 2 - 50) && state.pipes[i].pipeMove === false) {
                 Pipe.generatePipes();
+
                 state.pipeGenerated++;
+                state.pipes[i].pipeMove = true;
 
                 if (state.pipeGenerated >= (state.highscore - 1) && state.pipeGenerated < state.highscore) {
                     state.pipes[i + 1].lastPipe = true;
                 }
             }
+
+            // if (state.pipes[i].x > state.pipeSpawnRange[0] && state.pipes[i].x < state.pipeSpawnRange[1]) {
+            //     Pipe.generatePipes();
+            //     state.pipeGenerated++;
+            //     console.log("Jumlah pipa : " + state.pipeGenerated);
+
+            //     if (state.pipeGenerated >= (state.highscore - 1) && state.pipeGenerated < state.highscore) {
+            //         state.pipes[i + 1].lastPipe = true;
+            //     }
+            // }
 
             if (state.pipes[i].x + state.pipes[i].width < 0) {
                 state.pipes.splice(i, 1);
