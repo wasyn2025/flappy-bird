@@ -4,8 +4,14 @@
     box-sizing: border-box;
 }
 
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: oklch(97.9% 0.021 166.113);
+}
+
 canvas[id="game"] {
     display: block;
-    margin: 20px auto;
-    border: 2px solid black;
 }

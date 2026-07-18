@@ -1,10 +1,14 @@
-// canvas setup
+import * as Draw from "./draw.js";
+import * as Pipe from "./pipe.js";
+import * as Asset from "./asset.js";
+import * as Util from "./util.js";
+
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
+context.imageSmoothingEnabled = false;
 canvas.width = 400;
-canvas.height = 600;
+canvas.height = 650;
 
-// game state
 let isStart = false;
 let isGameOver = false;
 let gameOverReason = "";
@@ -12,44 +16,80 @@ let gameOverDelay = false;
 let score = 0;
 let highscore = 0;
 
-// pipe stuff
 const pipes = [];
 const minPipeHeight = 20;
-const pipeGap = 160;
+const pipeGap = 140;
 const pipeWidth = 70;
+const pipeMoveSpeed = 2.8;
 const maxPipeHeight = canvas.height - pipeGap - minPipeHeight;
 const pipeDistance = (canvas.width / 2) <= 300 ? (canvas.width / 2) - 50 : (canvas.width / 2) + 100;
-const pipeMoveSpeed = 2.5;
 const pipeSpawnRange = [pipeDistance - (pipeMoveSpeed + 2), pipeDistance];
 const pipeSpawnPosition = canvas.width + (pipeWidth * 2);
+const pipeHitSensitivity = 10;
 let pipeGenerated = 0;
 
-// audio collection
 const audio = {
     flapAudio: null,
     hitGroundAudio: null,
     hitPipeAudio: null,
     gameOverAudio: null,
     scoreAudio: null,
+    checkScoreAudio: null,
 }
 
-// bird stuff
 const bird = {
     positionX: 100,
     positionY: 50,
     velocityY: 0,
     gravity: 0.6,
+    rotation: 0,
+    width: 48,
+    height: 48
+}
+
+let loadedAssets = 0;
+let isAssetLoaded = false;
+const background = { positionX: 0, speed: 1 }
+const ground = {
+    x: 0,
+    y: canvas.height - 32,
+    width: 64,
+    height: 64,
+    speed: 1
+};
+
+const assets = {
+    bird: new Image(),
+    background: new Image(),
+    ground: new Image(),
+    pipeTop: new Image(),
+    pipeBottom: new Image()
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    context.fillStyle = "green";
-    context.fillRect(bird.positionX, 100, 50, 50);
+    Asset.loadAsset(assets, () => {
+        isAssetLoaded = true;
 
-    loadAudio();
-    drawScore();
+        Draw.drawBackground(assets, canvas, context, background);
+        Draw.drawGround(ground, canvas, context, assets);
+        Draw.drawScore(context, canvas, score);
+        Asset.loadAudio(audio);
+
+        context.drawImage(
+            assets.bird,
+            0,
+            0,
+            16,
+            16,
+            bird.positionX,
+            100,
+            bird.width,
+            bird.height
+        );
+    });
 
     window.addEventListener("keydown", (event) => {
-        if (gameOverDelay === false) {
+        if (gameOverDelay === false && isAssetLoaded === true) {
             if (event.code === "Space" && isStart === false) {
                 prepareGame();
 
@@ -74,38 +114,13 @@ function prepareGame() {
     bird.velocityY = -5;
     bird.positionY = 100;
 
-    clearPipes();
-    generatePipes();
+    Pipe.clearPipes(pipes);
+    Pipe.generatePipes(pipes, canvas, pipeWidth, pipeGap, minPipeHeight, maxPipeHeight);
     startGame();
-}
-
-function clearPipes() {
-    pipes.length = 0;
-}
-
-function generatePipes() {
-    const pipeHeight = Math.floor(
-        Math.random() * (maxPipeHeight - minPipeHeight) + minPipeHeight
-    );
-
-    pipes.push({
-        x: canvas.width,
-        y: 0,
-        width: pipeWidth,
-        height: pipeHeight,
-        gap: pipeGap,
-        passed: false,
-        lastPipe: false,
-    });
 }
 
 function startGame() {
     if (isGameOver === false) {
-        if (bird.positionY >= (canvas.height - 50)) {
-            isGameOver = true;
-            gameOverReason = "ground";
-        }
-
         updateGame();
         drawGame();
 
@@ -121,9 +136,6 @@ function startGame() {
 
         setTimeout(() => audio.gameOverAudio.cloneNode().play(), 450);
         setTimeout(() => gameOverDelay = false, 1000);
-
-        context.fillStyle = "red";
-        context.fillRect(bird.positionX, bird.positionY, 50, 50);
     }
 }
 
@@ -131,12 +143,13 @@ function updateGame() {
     if (isGameOver === false) {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        bird.velocityY += bird.gravity;
-        bird.positionY += bird.velocityY;
+        Util.moveBackground(background, -canvas.width);
+        Util.moveGround(ground);
+        Util.updateBirdMove(bird);
 
         for (let i = 0; i < pipes.length; i++) {
             if (pipes[i].x > pipeSpawnRange[0] && pipes[i].x < pipeSpawnRange[1]) {
-                generatePipes();
+                Pipe.generatePipes(pipes, canvas, pipeWidth, pipeGap, minPipeHeight, maxPipeHeight);
                 pipeGenerated++;
 
                 if (pipeGenerated >= (highscore - 1) && pipeGenerated < highscore) {
@@ -148,16 +161,14 @@ function updateGame() {
                 pipes.splice(i, 1);
             }
 
-            if (isColliding(pipes[i])) {
-                isGameOver = true;
-                gameOverReason = "pipe";
-            }
-
-            if (checkScore(pipes[i]) === true) {
-                audio.scoreAudio.cloneNode().play();
-                pipes[i].passed = true;
-                score++;
-            }
+            [isGameOver, gameOverReason] = Util.isColliding(
+                bird, pipes[i],
+                pipeHitSensitivity,
+                isGameOver,
+                gameOverReason,
+                canvas.height
+            );
+            score = Util.isBirdPassed(bird, pipes[i], score, audio);
 
             pipes[i].x -= pipeMoveSpeed;
         }
@@ -165,71 +176,9 @@ function updateGame() {
 }
 
 function drawGame() {
-    drawBird();
-    drawPipe();
-    drawScore();
-}
-
-function drawBird() {
-    context.fillStyle = "yellow";
-    context.fillRect(bird.positionX, bird.positionY, 50, 50);
-}
-
-function drawPipe() {
-    for (let i = 0; i < pipes.length; i++) {
-        if (pipes[i].lastPipe === true) {
-            context.fillStyle = "gold";
-        } else {
-            context.fillStyle = "green";
-        }
-
-        context.fillRect(pipes[i].x, pipes[i].y, pipes[i].width, pipes[i].height); // pipe atas
-        context.fillRect(
-            pipes[i].x,
-            (pipes[i].height + pipes[i].gap),
-            pipes[i].width,
-            canvas.height - (pipes[i].height + pipes[i].gap)
-        ); //  pipe bawah
-    }
-}
-
-function drawScore() {
-    context.font = "40px Arial";
-    context.textAlign = "center";
-    context.fillStyle = "black";
-    context.fillText(score, canvas.width / 2, 50);
-
-    context.strokeStyle = "black";
-    context.lineWidth = 2;
-    context.strokeText(score, canvas.width / 2, 50);
-}
-
-
-function isColliding(pipe) {
-    const birdRect = {
-        x: bird.positionX,
-        y: bird.positionY,
-        width: 50,
-        height: 50
-    };
-
-    return (
-        birdRect.x < pipe.x + pipe.width &&
-        birdRect.x + birdRect.width > pipe.x &&
-        (birdRect.y < pipe.y + pipe.height || birdRect.y + birdRect.height > pipe.y + pipe.height + pipe.gap)
-    );
-}
-
-function checkScore(pipe) {
-    if (pipe.x + pipe.width < bird.positionX && pipe.passed === false) {
-        return true;
-    }
-}
-
-function loadAudio() {
-    audio.hitGroundAudio = new Audio("./sounds/hit-ground.wav");
-    audio.hitPipeAudio = new Audio("./sounds/hit-pipe.wav");
-    audio.gameOverAudio = new Audio("./sounds/gameover.wav");
-    audio.flapAudio = new Audio("./sounds/bird-flap.wav");
-    audio.scoreAudio = new Audio("./sounds/score.wav");
+    Draw.drawBackground(assets, canvas, context, background);
+    Draw.drawPipe(context, pipes, canvas, assets.pipeTop, assets.pipeBottom);
+    Draw.drawGround(ground, canvas, context, assets);
+    Draw.drawBird(context, assets, bird);
+    Draw.drawScore(context, canvas, score);
 }
