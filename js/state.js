@@ -20,6 +20,7 @@ export const state = {
     pipeHitSensitivity: 10,
     pipeGenerated: 0,
     _pipeSpawnRange: 0,
+    delayPipeStartId: null,
     delayPipeStart: true,
 
     get maxPipeHeight() {

@@ -4,6 +4,33 @@ import * as Asset from "./asset.js";
 import * as Util from "./util.js";
 import { canvas, context, state, sounds, assets } from "./state.js";
 
+function flap() {
+    if (state.gameOverDelay === true || state.isAssetLoaded === false) {
+        return;
+    }
+
+    if (state.isStart === false) {
+        cancelAnimationFrame(state.fallingAnimationId);
+        state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 1500);
+
+        sounds.flap.cloneNode().play();
+        state.isStart = true;
+        state.isGameOver = false;
+        state.score = 0;
+        state.bird.velocityY = -5;
+        state.bird.positionY = 100;
+
+        Pipe.clearPipes();
+        Pipe.generatePipes();
+        startGame();
+
+        return;
+    }
+
+    sounds.flap.cloneNode().play();
+    state.bird.velocityY = -10;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     Asset.loadAsset(() => {
         state.isAssetLoaded = true;
@@ -26,33 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.addEventListener("keydown", (event) => {
-        if (state.gameOverDelay === false && state.isAssetLoaded === true) {
-            if (event.code === "Space" && state.isStart === false) {
-                sounds.flap.cloneNode().play();
-                state.isStart = true;
-                state.isGameOver = false;
-                state.score = 0;
-                state.bird.velocityY = -5;
-                state.bird.positionY = 100;
-
-                cancelAnimationFrame(state.fallingAnimationId);
-                state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 2000);
-
-                Pipe.clearPipes();
-                Pipe.generatePipes();
-                startGame();
-
-                return;
-            }
-
-            if (event.code === "Space") {
-                sounds.flap.cloneNode().play();
-                state.bird.velocityY = -10;
-
-                return;
-            }
+        if (event.code === "Space" && state.isStart === false) {
+            flap()
         }
     });
+
+    canvas.addEventListener("mousedown", (event) => {
+        if(event.button === 0) {
+            flap();
+        }
+    })
 });
 
 function startGame() {
