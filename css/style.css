@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -9,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: oklch(97.9% 0.021 166.113);
+    background-color: oklch(26.9% 0 none);
 }
 
 canvas[id="game"] {

@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         Draw.drawBackground();
         Draw.drawGround();
-        Draw.drawScore();
         Asset.loadAudio();
 
         context.drawImage(
@@ -89,7 +88,7 @@ function startGame() {
             state.shakeDuration = 15;
             state.shakeIntensity = 15,
 
-            setTimeout(drawBirdFalling, 100);
+                setTimeout(drawBirdFalling, 100);
         }
     }
 }

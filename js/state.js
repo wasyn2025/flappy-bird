@@ -1,7 +1,7 @@
 export const canvas = document.getElementById("game");
 export const context = canvas.getContext("2d");
 canvas.width = 400;
-canvas.height = 650;
+canvas.height = 700;
 
 export const state = {
     isStart: false,
