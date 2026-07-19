@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.addEventListener("keydown", (event) => {
-        if (event.code === "Space" && state.isStart === false) {
+        if (event.code === "Space") {
             flap()
         }
     });
