@@ -58,11 +58,14 @@ export function moveGround() {
     }
 }
 
-// Update bird positionY in canvas
-export function updateBirdMove() {
+// Update bird falling (position Y)
+export function updateBirdVelocity() {
     state.bird.velocityY += state.bird.gravity;
     state.bird.positionY += state.bird.velocityY;
+}
 
+// Update bird rotation
+export function updateBirdRotation() {
     if (state.bird.velocityY < 0) {
         state.bird.rotation = -0.3;
     } else {

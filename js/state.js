@@ -30,13 +30,8 @@ export const state = {
             (canvas.width / 2) + 100;
     },
 
-    get pipeSpawnRange() {
-        return [Math.abs(this.pipeDistance - 10 + 2), this.pipeDistance]
-    },
-
     get pipeSpawnPosition() {
-        return canvas.width + (this.pipeWidth + 2)
-        // return canvas.width + (this.pipeWidth * 2)
+        return canvas.width + (this.pipeWidth * 2)
     },
 
     // bird state
@@ -49,6 +44,23 @@ export const state = {
         width: 48,
         height: 48
     },
+
+    // bird falling animation state
+    fallingAnimationId: null,
+    _difference: 0,
+
+    get difference() {
+        return this._difference;
+    },
+
+    set difference(birdPositionY) {
+        this._difference = Math.round((canvas.height - 32) - birdPositionY);
+    },
+
+    // camera shake state animation
+    isShaking: false,
+    shakeDuration: 0,
+    shakeIntensity: 0,
 
     // asset state
     loadedAsset: 0,

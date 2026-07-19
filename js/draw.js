@@ -41,9 +41,9 @@ export function drawPipe() {
         // top pipe
         context.drawImage(
             assets.pipeTop,
-            state.pipes[i].x, 
-            state.pipes[i].y, 
-            state.pipes[i].width, 
+            state.pipes[i].x,
+            state.pipes[i].y,
+            state.pipes[i].width,
             state.pipes[i].height
         );
 
@@ -76,7 +76,7 @@ export function drawGround() {
 export function drawBird() {
     context.save();
     context.translate(
-        state.bird.positionX + state.bird.width / 2, 
+        state.bird.positionX + state.bird.width / 2,
         state.bird.positionY + state.bird.height / 2
     );
 
@@ -103,4 +103,20 @@ export function drawScore() {
     context.textAlign = "center";
     context.fillStyle = "white";
     context.fillText(state.score, canvas.width / 2, 50);
+}
+
+export function drawShakeAnim() {
+    if (!state.isShaking) {
+        return;
+    }
+
+    const offsetX = (Math.random() - 0.5) * state.shakeIntensity;
+    const offsetY = (Math.random() - 0.5) * state.shakeIntensity;
+    context.translate(offsetX, offsetY);
+
+    state.shakeDuration--;
+
+    if (state.shakeDuration <= 0) {
+        state.isShaking = false;
+    }
 }
