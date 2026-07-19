@@ -78,7 +78,7 @@ export function updateBirdRotation() {
     }
 }
 
-// handle pipe generation and moving pipes
+// handle pipe generation, check pipe passed bird, and moving pipes
 export function handlePipe() {
     for (let i = 0; i < state.pipes.length; i++) {
         if (state.pipes[i].x < (canvas.width / 2 - 50) && state.pipes[i].pipeMove === false) {
@@ -96,7 +96,6 @@ export function handlePipe() {
             state.pipes.splice(i, 1);
         }
 
-        pipeCollide(state.pipes[i]);
         isBirdPassed(state.pipes[i]);
 
         state.pipes[i].x -= state.pipeMoveSpeed;

@@ -32,6 +32,7 @@ export function drawBackground() {
 // Draw pipe objects with the updated position
 export function drawPipe() {
     for (let i = 0; i < state.pipes.length; i++) {
+        pipeCollide(state.pipes[i]);
         // if (state.pipes[i].lastPipe === true) {
         //     context.fillStyle = "gold";
         // } else {

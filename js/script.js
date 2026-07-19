@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 state.bird.positionY = 100;
 
                 cancelAnimationFrame(state.fallingAnimationId);
-                setTimeout(() => state.delayPipeStart = false, 2000);
+                state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 2000);
 
                 Pipe.clearPipes();
                 Pipe.generatePipes();
@@ -64,11 +64,13 @@ function startGame() {
         state.startGameAnimationId = requestAnimationFrame(startGame);
     } else {
         cancelAnimationFrame(state.startGameAnimationId);
+        clearTimeout(state.delayPipeStartId);
 
         state.highscore = state.score > state.highscore ?
             state.score :
             state.highscore;
 
+        state.delayPipeStart = true;
         state.pipeGenerated = 0;
         state.pipeMoveSpeed = 2.8;
         state.isStart = false;
@@ -86,7 +88,6 @@ function startGame() {
             state.isShaking = true;
             state.shakeDuration = 15;
             state.shakeIntensity = 6;
-            state.delayPipeStart = true;
 
             setTimeout(drawBirdFalling, 100);
         }
@@ -102,18 +103,14 @@ function updateGame() {
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
 
-        if (state.delayPipeStart === false) {
-            Util.handlePipe();
-        }
+        if (state.delayPipeStart === false) Util.handlePipe();
     }
 }
 
 function drawGame() {
     Draw.drawBackground();
 
-    if (state.delayPipeStart === false) {
-        Draw.drawPipe();
-    }
+    if (state.delayPipeStart === false) Draw.drawPipe();
 
     Draw.drawGround();
     Draw.drawBird();
