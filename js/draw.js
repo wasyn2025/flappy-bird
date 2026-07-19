@@ -1,5 +1,5 @@
 import { canvas, context, state, sounds, assets } from "./state.js";
-
+import { pipeCollide } from "./util.js";
 
 // Draw the background flappy bird with the current position
 export function drawBackground() {
@@ -32,11 +32,11 @@ export function drawBackground() {
 // Draw pipe objects with the updated position
 export function drawPipe() {
     for (let i = 0; i < state.pipes.length; i++) {
-        if (state.pipes[i].lastPipe === true) {
-            context.fillStyle = "gold";
-        } else {
-            context.fillStyle = "green";
-        }
+        // if (state.pipes[i].lastPipe === true) {
+        //     context.fillStyle = "gold";
+        // } else {
+        //     context.fillStyle = "green";
+        // }
 
         // top pipe
         context.drawImage(

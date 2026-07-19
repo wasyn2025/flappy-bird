@@ -10,6 +10,7 @@ export const state = {
     gameOverDelay: false,
     score: 0,
     highScore: 0,
+    startGameAnimationId: null,
 
     pipes: [],
     minPipeHeight: 20,
@@ -19,6 +20,7 @@ export const state = {
     pipeHitSensitivity: 10,
     pipeGenerated: 0,
     _pipeSpawnRange: 0,
+    delayPipeStart: true,
 
     get maxPipeHeight() {
         return canvas.height - this.pipeGap - this.minPipeHeight;

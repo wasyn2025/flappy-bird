@@ -1,18 +1,14 @@
 import { canvas, context, state, sounds, assets } from "./state.js";
+import * as Pipe from "./pipe.js";
 
 // Check whether the the bird hit a pipe
-export function isColliding(pipe) {
+export function pipeCollide(pipe) {
     const birdRect = {
         x: state.bird.positionX,
         y: state.bird.positionY,
         width: state.bird.width,
         height: state.bird.height
     };
-
-    if (state.bird.positionY >= (canvas.height - 80)) {
-        state.isGameOver = true;
-        state.gameOverReason = "ground";
-    }
 
     if (
         birdRect.x < (pipe.x + pipe.width) - state.pipeHitSensitivity &&
@@ -21,6 +17,14 @@ export function isColliding(pipe) {
     ) {
         state.isGameOver = true;
         state.gameOverReason = "pipe";
+    }
+}
+
+// Check whether the the bird hit a pipe
+export function groundCollide() {
+    if (state.bird.positionY >= (canvas.height - 80)) {
+        state.isGameOver = true;
+        state.gameOverReason = "ground";
     }
 }
 
@@ -71,5 +75,30 @@ export function updateBirdRotation() {
     } else {
         state.bird.rotation += 0.03;
         state.bird.rotation = state.bird.rotation > 1.2 ? 1.2 : state.bird.rotation;
+    }
+}
+
+// handle pipe generation and moving pipes
+export function handlePipe() {
+    for (let i = 0; i < state.pipes.length; i++) {
+        if (state.pipes[i].x < (canvas.width / 2 - 50) && state.pipes[i].pipeMove === false) {
+            Pipe.generatePipes();
+
+            state.pipeGenerated++;
+            state.pipes[i].pipeMove = true;
+
+            if (state.pipeGenerated >= (state.highscore - 1) && state.pipeGenerated < state.highscore) {
+                state.pipes[i + 1].lastPipe = true;
+            }
+        }
+
+        if (state.pipes[i].x + state.pipes[i].width < 0) {
+            state.pipes.splice(i, 1);
+        }
+
+        pipeCollide(state.pipes[i]);
+        isBirdPassed(state.pipes[i]);
+
+        state.pipes[i].x -= state.pipeMoveSpeed;
     }
 }

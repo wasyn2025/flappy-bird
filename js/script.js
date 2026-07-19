@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 state.bird.positionY = 100;
 
                 cancelAnimationFrame(state.fallingAnimationId);
+                setTimeout(() => state.delayPipeStart = false, 2000);
 
                 Pipe.clearPipes();
                 Pipe.generatePipes();
@@ -54,17 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
-let fuckingCancelTheAnimation;
-
 function startGame() {
     if (state.isGameOver === false) {
         updateGame();
         drawGame();
+        Util.groundCollide();
 
-        fuckingCancelTheAnimation = requestAnimationFrame(startGame);
+        state.startGameAnimationId = requestAnimationFrame(startGame);
     } else {
-        cancelAnimationFrame(fuckingCancelTheAnimation);
+        cancelAnimationFrame(state.startGameAnimationId);
 
         state.highscore = state.score > state.highscore ?
             state.score :
@@ -86,9 +85,10 @@ function startGame() {
             state.bird.velocityY = 0;
             state.isShaking = true;
             state.shakeDuration = 15;
-            state.shakeIntensity = 15,
+            state.shakeIntensity = 6;
+            state.delayPipeStart = true;
 
-                setTimeout(drawBirdFalling, 100);
+            setTimeout(drawBirdFalling, 100);
         }
     }
 }
@@ -102,33 +102,19 @@ function updateGame() {
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
 
-        for (let i = 0; i < state.pipes.length; i++) {
-            if (state.pipes[i].x < (canvas.width / 2 - 50) && state.pipes[i].pipeMove === false) {
-                Pipe.generatePipes();
-
-                state.pipeGenerated++;
-                state.pipes[i].pipeMove = true;
-
-                if (state.pipeGenerated >= (state.highscore - 1) && state.pipeGenerated < state.highscore) {
-                    state.pipes[i + 1].lastPipe = true;
-                }
-            }
-
-            if (state.pipes[i].x + state.pipes[i].width < 0) {
-                state.pipes.splice(i, 1);
-            }
-
-            Util.isColliding(state.pipes[i]);
-            Util.isBirdPassed(state.pipes[i]);
-
-            state.pipes[i].x -= state.pipeMoveSpeed;
+        if (state.delayPipeStart === false) {
+            Util.handlePipe();
         }
     }
 }
 
 function drawGame() {
     Draw.drawBackground();
-    Draw.drawPipe();
+
+    if (state.delayPipeStart === false) {
+        Draw.drawPipe();
+    }
+
     Draw.drawGround();
     Draw.drawBird();
     Draw.drawScore();
@@ -138,10 +124,10 @@ function drawBirdFalling() {
     if (state.bird.positionY <= (canvas.height - 32 - state.bird.height)) {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        context.save();
-
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
+
+        context.save();
 
         Draw.drawShakeAnim();
         Draw.drawBackground();
