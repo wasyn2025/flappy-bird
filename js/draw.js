@@ -71,7 +71,7 @@ export function drawGround() {
 // Draw the bird object with the updated position
 export function drawBird() {
     context.save();
-    
+
     context.translate(
         state.bird.positionX + state.bird.width / 2,
         state.bird.positionY + state.bird.height / 2
@@ -128,7 +128,7 @@ export function drawShakeAnim() {
 
 export function drawCurrentGameOverState() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    state.flashAlpha -= 0.05;
+    state.flashAlpha -= 0.1;
 
     context.save();
 

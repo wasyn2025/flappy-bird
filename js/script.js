@@ -125,13 +125,12 @@ function drawBirdFalling() {
     if (state.bird.positionY <= (canvas.height - 32 - state.bird.height)) {
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
-
-        // backgrpund putih tidak sempat menghilang ketika bird mengenai
-        // pipe bawah yang berdekatan dengan ground
         Draw.drawCurrentGameOverState();
 
         state.fallingAnimationId = requestAnimationFrame(drawBirdFalling);
     } else {
         cancelAnimationFrame(state.fallingAnimationId);
     }
+
+    // Draw.triggerScreenFlash();
 }
