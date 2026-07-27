@@ -10,6 +10,9 @@ function flap() {
     }
 
     if (state.isStart === false) {
+        const startText = document.querySelector(".textContainer").querySelector("span");
+        startText.style.opacity = "0";
+
         cancelAnimationFrame(state.fallingAnimationId);
         cancelAnimationFrame(state.backgroundAutoRunId);
 
@@ -122,6 +125,9 @@ function drawBirdFalling() {
     if (state.bird.positionY <= (canvas.height - 32 - state.bird.height)) {
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
+
+        // backgrpund putih tidak sempat menghilang ketika bird mengenai
+        // pipe bawah yang berdekatan dengan ground
         Draw.drawCurrentGameOverState();
 
         state.fallingAnimationId = requestAnimationFrame(drawBirdFalling);

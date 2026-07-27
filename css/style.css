@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Geist Pixel", sans-serif;
 }
 
 .geist-pixel {
@@ -16,4 +17,37 @@ body {
     justify-content: center;
     align-items: center;
     background-color: oklch(26.9% 0 none);
+}
+
+.textContainer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    inset: 0;
+    font-weight: bold;
+}
+
+.textContainer span {
+    display: inline-block;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.188);
+    opacity: 1;
+    animation: float 1000ms ease-in-out infinite;
+    transition: opacity 300ms ease-in-out;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
