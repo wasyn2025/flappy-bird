@@ -131,6 +131,4 @@ function drawBirdFalling() {
     } else {
         cancelAnimationFrame(state.fallingAnimationId);
     }
-
-    // Draw.triggerScreenFlash();
 }
