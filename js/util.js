@@ -113,17 +113,17 @@ export function runBackground() {
     drawBackground();
     drawGround();
 
-    context.drawImage(
-        assets.bird,
-        0,
-        0,
-        16,
-        16,
-        state.bird.positionX,
-        100,
-        state.bird.width,
-        state.bird.height
-    );
+    // context.drawImage(
+    //     assets.bird,
+    //     0,
+    //     0,
+    //     16,
+    //     16,
+    //     state.bird.positionX,
+    //     100,
+    //     state.bird.width,
+    //     state.bird.height
+    // );
 
     state.backgroundAutoRunId = requestAnimationFrame(runBackground);
 }
