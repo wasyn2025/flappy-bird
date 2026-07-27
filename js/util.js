@@ -1,4 +1,5 @@
 import { canvas, context, state, sounds, assets } from "./state.js";
+import { drawBackground, drawGround } from "./draw.js";
 import * as Pipe from "./pipe.js";
 
 // Check whether the the bird hit a pipe
@@ -100,4 +101,29 @@ export function handlePipe() {
 
         state.pipes[i].x -= state.pipeMoveSpeed;
     }
+}
+
+// Run background automatically at start menu
+export function runBackground() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    moveBackground();
+    moveGround();
+
+    drawBackground();
+    drawGround();
+
+    context.drawImage(
+        assets.bird,
+        0,
+        0,
+        16,
+        16,
+        state.bird.positionX,
+        100,
+        state.bird.width,
+        state.bird.height
+    );
+
+    state.backgroundAutoRunId = requestAnimationFrame(runBackground);
 }

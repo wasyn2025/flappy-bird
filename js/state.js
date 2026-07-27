@@ -10,7 +10,6 @@ export const state = {
     gameOverDelay: false,
     score: 0,
     highScore: 0,
-    startGameAnimationId: null,
 
     pipes: [],
     minPipeHeight: 20,
@@ -82,6 +81,9 @@ export const state = {
     // flicker state
     flashAlpha: 0,
     flashAnimationId: null,
+
+    // background auto run state
+    backgroundAutoRunId: null,
 };
 
 // sound storage

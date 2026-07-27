@@ -33,12 +33,7 @@ export function drawBackground() {
 export function drawPipe() {
     for (let i = 0; i < state.pipes.length; i++) {
         pipeCollide(state.pipes[i]);
-        // if (state.pipes[i].lastPipe === true) {
-        //     context.fillStyle = "gold";
-        // } else {
-        //     context.fillStyle = "green";
-        // }
-
+        
         // top pipe
         context.drawImage(
             assets.pipeTop,
@@ -76,6 +71,7 @@ export function drawGround() {
 // Draw the bird object with the updated position
 export function drawBird() {
     context.save();
+    
     context.translate(
         state.bird.positionX + state.bird.width / 2,
         state.bird.positionY + state.bird.height / 2

@@ -11,6 +11,8 @@ function flap() {
 
     if (state.isStart === false) {
         cancelAnimationFrame(state.fallingAnimationId);
+        cancelAnimationFrame(state.backgroundAutoRunId);
+
         state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 1500);
 
         sounds.flap.cloneNode().play();
@@ -34,23 +36,10 @@ function flap() {
 document.addEventListener("DOMContentLoaded", () => {
     Asset.loadAsset(() => {
         state.isAssetLoaded = true;
-
-        Draw.drawBackground();
-        Draw.drawGround();
         Asset.loadAudio();
-
-        context.drawImage(
-            assets.bird,
-            0,
-            0,
-            16,
-            16,
-            state.bird.positionX,
-            100,
-            state.bird.width,
-            state.bird.height
-        );
     });
+
+    Util.runBackground();
 
     window.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
