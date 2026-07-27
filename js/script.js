@@ -103,43 +103,9 @@ function startGame() {
 
             setTimeout(drawBirdFalling, 100);
         } else {
-            triggerScreenFlash();
+            Draw.triggerScreenFlash();
         }
     }
-}
-
-function drawCurrentGameOverState() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    state.flashAlpha -= 0.05;
-
-    context.save();
-
-    Draw.drawShakeAnim();
-    Draw.drawBackground();
-    Draw.drawPipe();
-    Draw.drawBird();
-    Draw.drawGround();
-    Draw.drawScore();
-    drawScreenFlash();
-
-    context.restore();
-}
-
-function triggerScreenFlash() {
-    if (state.flashAlpha > 0) {
-        drawCurrentGameOverState();
-        state.flashAnimationId = requestAnimationFrame(triggerScreenFlash);
-    } else {
-        cancelAnimationFrame(state.flashAnimationId);
-    }
-}
-
-function drawScreenFlash() {
-    if (state.flashAlpha <= 0) return;
-
-    context.globalAlpha = state.flashAlpha;
-    context.fillStyle = "white";
-    context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 function updateGame() {
@@ -167,7 +133,7 @@ function drawBirdFalling() {
     if (state.bird.positionY <= (canvas.height - 32 - state.bird.height)) {
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
-        drawCurrentGameOverState();
+        Draw.drawCurrentGameOverState();
 
         state.fallingAnimationId = requestAnimationFrame(drawBirdFalling);
     } else {

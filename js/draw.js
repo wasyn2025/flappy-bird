@@ -129,3 +129,37 @@ export function drawShakeAnim() {
         state.isShaking = false;
     }
 }
+
+export function drawCurrentGameOverState() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    state.flashAlpha -= 0.05;
+
+    context.save();
+
+    drawShakeAnim();
+    drawBackground();
+    drawPipe();
+    drawBird();
+    drawGround();
+    drawScore();
+    drawScreenFlash();
+
+    context.restore();
+}
+
+function drawScreenFlash() {
+    if (state.flashAlpha <= 0) return;
+
+    context.globalAlpha = state.flashAlpha;
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+export function triggerScreenFlash() {
+    if (state.flashAlpha > 0) {
+        drawCurrentGameOverState();
+        state.flashAnimationId = requestAnimationFrame(triggerScreenFlash);
+    } else {
+        cancelAnimationFrame(state.flashAnimationId);
+    }
+}
