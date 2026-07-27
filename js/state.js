@@ -1,7 +1,7 @@
 export const canvas = document.getElementById("game");
 export const context = canvas.getContext("2d");
-canvas.width = 400;
-canvas.height = 700;
+canvas.width = 370;
+canvas.height = 650;
 
 export const state = {
     isStart: false,
@@ -77,7 +77,11 @@ export const state = {
         width: 64,
         height: 64,
         speed: 1
-    }
+    },
+
+    // flicker state
+    flashAlpha: 0,
+    flashAnimationId: null,
 };
 
 // sound storage
@@ -88,6 +92,7 @@ export const sounds = {
     gameOver: null,
     score: null,
     checkpoint: null,
+    whoosh: null,
 };
 
 // asset storage

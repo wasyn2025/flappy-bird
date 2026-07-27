@@ -54,12 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
-            flap()
+            flap();
         }
     });
 
     canvas.addEventListener("mousedown", (event) => {
-        if(event.button === 0) {
+        if (event.button === 0) {
             flap();
         }
     })
@@ -85,6 +85,11 @@ function startGame() {
         state.pipeMoveSpeed = 2.8;
         state.isStart = false;
         state.gameOverDelay = true;
+        state.flashAlpha = 1;
+        state.isShaking = true;
+        state.shakeDuration = 15;
+        state.shakeIntensity = 6;
+
         state.gameOverReason === "pipe" ?
             sounds.hitPipe.cloneNode().play() :
             sounds.hitGround.cloneNode().play();
@@ -95,13 +100,46 @@ function startGame() {
         if (state.gameOverReason === "pipe") {
             state.difference = state.bird.positionY;
             state.bird.velocityY = 0;
-            state.isShaking = true;
-            state.shakeDuration = 15;
-            state.shakeIntensity = 6;
 
             setTimeout(drawBirdFalling, 100);
+        } else {
+            triggerScreenFlash();
         }
     }
+}
+
+function drawCurrentGameOverState() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    state.flashAlpha -= 0.05;
+
+    context.save();
+
+    Draw.drawShakeAnim();
+    Draw.drawBackground();
+    Draw.drawPipe();
+    Draw.drawBird();
+    Draw.drawGround();
+    Draw.drawScore();
+    drawScreenFlash();
+
+    context.restore();
+}
+
+function triggerScreenFlash() {
+    if (state.flashAlpha > 0) {
+        drawCurrentGameOverState();
+        state.flashAnimationId = requestAnimationFrame(triggerScreenFlash);
+    } else {
+        cancelAnimationFrame(state.flashAnimationId);
+    }
+}
+
+function drawScreenFlash() {
+    if (state.flashAlpha <= 0) return;
+
+    context.globalAlpha = state.flashAlpha;
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 function updateGame() {
@@ -119,9 +157,7 @@ function updateGame() {
 
 function drawGame() {
     Draw.drawBackground();
-
     if (state.delayPipeStart === false) Draw.drawPipe();
-
     Draw.drawGround();
     Draw.drawBird();
     Draw.drawScore();
@@ -129,21 +165,9 @@ function drawGame() {
 
 function drawBirdFalling() {
     if (state.bird.positionY <= (canvas.height - 32 - state.bird.height)) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
-
-        context.save();
-
-        Draw.drawShakeAnim();
-        Draw.drawBackground();
-        Draw.drawPipe();
-        Draw.drawGround();
-        Draw.drawBird();
-        Draw.drawScore();
-
-        context.restore();
+        drawCurrentGameOverState();
 
         state.fallingAnimationId = requestAnimationFrame(drawBirdFalling);
     } else {

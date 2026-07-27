@@ -4,9 +4,10 @@ export function loadAudio() {
     sounds.hitGround = new Audio("./sounds/hit-ground.wav");
     sounds.hitPipe = new Audio("./sounds/hit-pipe.wav");
     sounds.gameOver = new Audio("./sounds/gameover.wav");
-    sounds.flap = new Audio("./sounds/flap.wav");
+    sounds.flap = new Audio("./sounds/flap.flac");
     sounds.score = new Audio("./sounds/score.wav");
     sounds.checkpoint = new Audio("./sounds/checkpoint.mp3");
+    sounds.whoosh = new Audio("./sounds/whoosh.wav");
 }
 
 // perbaiki masalah onFinished() callback yang dijalankan berulang kali
