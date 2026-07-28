@@ -1,7 +1,11 @@
+import { resizeCanvas } from "./util.js";
+
 export const canvas = document.getElementById("game");
 export const context = canvas.getContext("2d");
-canvas.width = 370;
-canvas.height = 650;
+export const CANVAS_WIDTH = 400;
+export const CANVAS_HEIGHT = 600;
+
+resizeCanvas();
 
 export const state = {
     isStart: false,

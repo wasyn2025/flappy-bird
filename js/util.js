@@ -1,4 +1,4 @@
-import { canvas, context, state, sounds, assets } from "./state.js";
+import { canvas, context, state, sounds, assets, CANVAS_WIDTH, CANVAS_HEIGHT } from "./state.js";
 import { drawBackground, drawGround } from "./draw.js";
 import * as Pipe from "./pipe.js";
 
@@ -130,4 +130,21 @@ export function runBackground() {
 
 export function hideStartMenu() {
     document.querySelector("div.startContainer").style.opacity = 0;
+}
+
+export function resizeCanvas() {
+    const aspect = CANVAS_WIDTH / CANVAS_HEIGHT;
+    let width = window.innerHeight * aspect;
+    let height = window.innerHeight;
+
+    if (width > window.innerWidth) {
+        width = window.innerWidth;
+        height = width / aspect;
+    }
+
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
 }
