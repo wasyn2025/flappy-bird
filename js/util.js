@@ -23,7 +23,7 @@ export function pipeCollide(pipe) {
 
 // Check whether the the bird hit a pipe
 export function groundCollide() {
-    if (state.bird.positionY >= (canvas.height - 80)) {
+    if (state.bird.positionY >= (canvas.height - state.ground.height)) {
         state.isGameOver = true;
         state.gameOverReason = "ground";
     }
@@ -82,7 +82,7 @@ export function updateBirdRotation() {
 // handle pipe generation, check pipe passed bird, and moving pipes
 export function handlePipe() {
     for (let i = 0; i < state.pipes.length; i++) {
-        if (state.pipes[i].x < (canvas.width / 2 - 50) && state.pipes[i].pipeMove === false) {
+        if (state.pipes[i].x < (canvas.width / 2 - 20) && state.pipes[i].pipeMove === false) {
             Pipe.generatePipes();
 
             state.pipeGenerated++;

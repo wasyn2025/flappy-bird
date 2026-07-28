@@ -123,7 +123,7 @@ function drawGame() {
 }
 
 function drawBirdFalling() {
-    if (state.bird.positionY <= (canvas.height - 32 - state.bird.height)) {
+    if (state.bird.positionY <= (canvas.height - state.ground.height)) {
         Util.updateBirdVelocity();
         Util.updateBirdRotation();
         Draw.drawCurrentGameOverState();

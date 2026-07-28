@@ -2,7 +2,7 @@ import { resizeCanvas } from "./util.js";
 
 export const canvas = document.getElementById("game");
 export const context = canvas.getContext("2d");
-export const CANVAS_WIDTH = 400;
+export const CANVAS_WIDTH = 370;
 export const CANVAS_HEIGHT = 600;
 
 resizeCanvas();
@@ -22,7 +22,7 @@ export const state = {
     pipes: [],
     minPipeHeight: 20,
     pipeGap: 160,
-    pipeWidth: 70,
+    pipeWidth: 64,
     pipeMoveSpeed: 2.8,
     pipeHitSensitivity: 10,
     pipeGenerated: 0,
@@ -51,8 +51,8 @@ export const state = {
         velocityY: 0,
         gravity: 0.6,
         rotation: 0,
-        width: 48,
-        height: 48
+        width: 38,
+        height: 38
     },
 
     // bird falling animation state
@@ -80,9 +80,9 @@ export const state = {
     background: { positionX: 0, speed: 1 },
     ground: {
         positionX: 0,
-        positionY: canvas.height - 32,
-        width: 64,
-        height: 64,
+        positionY: canvas.height - 16,
+        width: 48,
+        height: 48,
         speed: 1
     },
 
