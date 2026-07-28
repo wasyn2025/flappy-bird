@@ -7,10 +7,6 @@
     font-family: "Geist Pixel", sans-serif;
 }
 
-.geist-pixel {
-    font-family: "Geist Pixel", sans-serif;
-}
-
 body {
     min-height: 100vh;
     display: flex;
@@ -19,23 +15,48 @@ body {
     background-color: oklch(26.9% 0 none);
 }
 
-.textContainer {
+.startContainer {
     position: absolute;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
     inset: 0;
     font-weight: bold;
+    pointer-events: none;
+    transition: opacity 1s ease-in-out;
 }
 
-.textContainer span {
+.startContainer>span {
     display: inline-block;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.188);
     opacity: 1;
     animation: float 1000ms ease-in-out infinite;
-    transition: opacity 300ms ease-in-out;
+}
+
+.medalContainer {
+    position: relative;
+    top: -50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.medalContainer>img {
+    object-fit: cover;
+    height: 100%;
+    width: 50px;
+}
+
+.medalContainer>span {
+    font-family: "Jersey 10", sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    -webkit-text-stroke: 1px black;
 }
 
 @keyframes float {

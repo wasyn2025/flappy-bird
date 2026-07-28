@@ -96,7 +96,7 @@ export function drawBird() {
 
 // Draw the score text with the updated score
 export function drawScore() {
-    context.font = "60px 'Jersey 10'";
+    context.font = "bold 60px 'Jersey 10'";
     context.textAlign = "center";
     context.fillStyle = "white";
     context.fillText(state.score, canvas.width / 2, 70);

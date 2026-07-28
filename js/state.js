@@ -9,7 +9,11 @@ export const state = {
     gameOverReason: "",
     gameOverDelay: false,
     score: 0,
-    highScore: 0,
+    highscore: Number(localStorage.getItem("highscore")) || 0,
+
+    getHighscore: () => {
+        document.querySelector("#highscore").textContent = state.highscore;
+    },
 
     pipes: [],
     minPipeHeight: 20,
@@ -103,5 +107,6 @@ export const assets = {
     background: new Image(),
     ground: new Image(),
     pipeTop: new Image(),
-    pipeBottom: new Image()
+    pipeBottom: new Image(),
+    medal: new Image()
 };

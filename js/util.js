@@ -127,3 +127,7 @@ export function runBackground() {
 
     state.backgroundAutoRunId = requestAnimationFrame(runBackground);
 }
+
+export function hideStartMenu() {
+    document.querySelector("div.startContainer").style.opacity = 0;
+}

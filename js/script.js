@@ -10,9 +10,7 @@ function flap() {
     }
 
     if (state.isStart === false) {
-        const startText = document.querySelector(".textContainer").querySelector("span");
-        startText.style.opacity = "0";
-
+        Util.hideStartMenu();
         cancelAnimationFrame(state.fallingAnimationId);
         cancelAnimationFrame(state.backgroundAutoRunId);
 
@@ -43,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     Util.runBackground();
+    state.getHighscore();
 
     window.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
@@ -70,7 +69,9 @@ function startGame() {
 
         state.highscore = state.score > state.highscore ?
             state.score :
-            state.highscore;
+            state.highscore
+
+        localStorage.setItem("highscore", state.highscore);
 
         state.delayPipeStart = true;
         state.pipeGenerated = 0;
