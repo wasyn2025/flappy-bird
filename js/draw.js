@@ -1,5 +1,5 @@
 import { canvas, context, state, sounds, assets } from "./state.js";
-import { pipeCollide } from "./util.js";
+import { pipeCollide, updateBirdVelocity, updateBirdRotation } from "./util.js";
 
 // Draw the background flappy bird with the current position
 export function drawBackground() {
@@ -204,4 +204,16 @@ export function drawCountdown(countdown) {
     context.strokeText(countdown, canvas.width / 2, canvas.height / 2);
 
     context.fillText(countdown, canvas.width / 2, canvas.height / 2);
+}
+
+export function drawBirdFalling() {
+    if (state.bird.positionY <= (canvas.height - state.ground.height)) {
+        updateBirdVelocity();
+        updateBirdRotation();
+        drawCurrentGameOverState();
+
+        state.fallingAnimationId = requestAnimationFrame(drawBirdFalling);
+    } else {
+        cancelAnimationFrame(state.fallingAnimationId);
+    }
 }

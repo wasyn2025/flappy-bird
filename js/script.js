@@ -100,7 +100,7 @@ function startGame() {
             state.difference = state.bird.positionY;
             state.bird.velocityY = 0;
 
-            setTimeout(drawBirdFalling, 100);
+            setTimeout(Draw.drawBirdFalling, 100);
         } else {
             Draw.triggerScreenFlash();
         }
@@ -126,16 +126,4 @@ function drawGame() {
     Draw.drawGround();
     Draw.drawBird();
     Draw.drawScore();
-}
-
-function drawBirdFalling() {
-    if (state.bird.positionY <= (canvas.height - state.ground.height)) {
-        Util.updateBirdVelocity();
-        Util.updateBirdRotation();
-        Draw.drawCurrentGameOverState();
-
-        state.fallingAnimationId = requestAnimationFrame(drawBirdFalling);
-    } else {
-        cancelAnimationFrame(state.fallingAnimationId);
-    }
 }
