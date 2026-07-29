@@ -70,40 +70,7 @@ function startGame() {
 
         state.startGameAnimationId = requestAnimationFrame(startGame);
     } else {
-        cancelAnimationFrame(state.startGameAnimationId);
-        clearTimeout(state.delayPipeStartId);
-
-        state.highscore = state.score > state.highscore ?
-            state.score :
-            state.highscore
-
-        localStorage.setItem("highscore", state.highscore);
-
-        state.delayPipeStart = true;
-        state.pipeGenerated = 0;
-        state.pipeMoveSpeed = 2.8;
-        state.isStart = false;
-        state.gameOverDelay = true;
-        state.flashAlpha = 1;
-        state.isShaking = true;
-        state.shakeDuration = 15;
-        state.shakeIntensity = 6;
-
-        state.gameOverReason === "pipe" ?
-            sounds.hitPipe.cloneNode().play() :
-            sounds.hitGround.cloneNode().play();
-
-        setTimeout(() => sounds.gameOver.cloneNode().play(), 450);
-        setTimeout(() => state.gameOverDelay = false, 2000);
-
-        if (state.gameOverReason === "pipe") {
-            state.difference = state.bird.positionY;
-            state.bird.velocityY = 0;
-
-            setTimeout(Draw.drawBirdFalling, 100);
-        } else {
-            Draw.triggerScreenFlash();
-        }
+        Util.handleGameOver();
     }
 }
 

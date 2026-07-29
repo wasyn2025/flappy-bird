@@ -1,5 +1,5 @@
 import { canvas, context, state, sounds, assets, CANVAS_WIDTH, CANVAS_HEIGHT, TIMEOUT_COUNTDOWN } from "./state.js";
-import { drawBackground, drawGround, drawCountdown, drawPauseText } from "./draw.js";
+import * as Draw from "./draw.js";
 import * as Pipe from "./pipe.js";
 
 // Check whether the the bird hit a pipe
@@ -110,8 +110,8 @@ export function runBackground() {
     moveBackground();
     moveGround();
 
-    drawBackground();
-    drawGround();
+    Draw.drawBackground();
+    Draw.drawGround();
 
     state.backgroundAutoRunId = requestAnimationFrame(runBackground);
 }
@@ -141,14 +141,14 @@ export function resizeCanvas() {
 export function pauseGame(startGame) {
     if (state.isPaused === false) {
         state.isPaused = true;
-        drawPauseText();
+        Draw.drawPauseText();
         cancelAnimationFrame(state.startGameAnimationId);
 
         return;
     }
 
     if (state.resumeIntervalId === false) {
-        drawCountdown(state.countdown);
+        Draw.n(state.countdown);
 
         state.resumeIntervalId = setInterval(() => {
             state.countdown--;
@@ -164,9 +164,46 @@ export function pauseGame(startGame) {
                 return;
             }
 
-            drawCountdown(state.countdown);
+            Draw.drawCountdown(state.countdown);
         }, 1000);
 
         return;
+    }
+}
+
+export function handleGameOver() {
+    cancelAnimationFrame(state.startGameAnimationId);
+    clearTimeout(state.delayPipeStartId);
+
+    state.highscore = state.score > state.highscore ?
+        state.score :
+        state.highscore
+
+    localStorage.setItem("highscore", state.highscore);
+
+    state.delayPipeStart = true;
+    state.pipeGenerated = 0;
+    state.pipeMoveSpeed = 2.8;
+    state.isStart = false;
+    state.gameOverDelay = true;
+    state.flashAlpha = 1;
+    state.isShaking = true;
+    state.shakeDuration = 15;
+    state.shakeIntensity = 6;
+
+    state.gameOverReason === "pipe" ?
+        sounds.hitPipe.cloneNode().play() :
+        sounds.hitGround.cloneNode().play();
+
+    setTimeout(() => sounds.gameOver.cloneNode().play(), 450);
+    setTimeout(() => state.gameOverDelay = false, 2000);
+
+    if (state.gameOverReason === "pipe") {
+        state.difference = state.bird.positionY;
+        state.bird.velocityY = 0;
+
+        setTimeout(Draw.drawBirdFalling, 100);
+    } else {
+        Draw.triggerScreenFlash();
     }
 }
