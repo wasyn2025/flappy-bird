@@ -4,38 +4,6 @@ import * as Asset from "./asset.js";
 import * as Util from "./util.js";
 import { canvas, context, state, sounds, assets } from "./state.js";
 
-function flap() {
-    if (state.gameOverDelay === true || state.isAssetLoaded === false) {
-        return;
-    }
-
-    if (state.isStart === false) {
-        Util.hideStartMenu();
-        cancelAnimationFrame(state.fallingAnimationId);
-        cancelAnimationFrame(state.backgroundAutoRunId);
-
-        state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 1500);
-
-        sounds.flap.cloneNode().play();
-        state.isStart = true;
-        state.isGameOver = false;
-        state.score = 0;
-        state.bird.velocityY = -5;
-        state.bird.positionY = 100;
-
-        Pipe.clearPipes();
-        Pipe.generatePipes();
-        startGame();
-
-        return;
-    }
-
-    if (state.isPaused === false) {
-        sounds.flap.cloneNode().play();
-        state.bird.velocityY = -10;
-    }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     Asset.loadAsset(() => {
         state.isAssetLoaded = true;
@@ -47,8 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
-            flap();
-        }
+            Util.flap(startGame);
+        }   
 
         if (event.code === "KeyP" && state.isStart === true) {
             Util.pauseGame(startGame);
@@ -57,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     canvas.addEventListener("mousedown", (event) => {
         if (event.button === 0) {
-            flap();
+            Util.flap(startGame);
         }
     });
 });

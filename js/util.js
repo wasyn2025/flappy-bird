@@ -171,6 +171,9 @@ export function pauseGame(startGame) {
     }
 }
 
+// function that will restart all the related state variable and stop
+// startGame, clear delayPipeStartId, and check a new highscore when
+// the game is over
 export function handleGameOver() {
     cancelAnimationFrame(state.startGameAnimationId);
     clearTimeout(state.delayPipeStartId);
@@ -205,5 +208,37 @@ export function handleGameOver() {
         setTimeout(Draw.drawBirdFalling, 100);
     } else {
         Draw.triggerScreenFlash();
+    }
+}
+
+export function flap(startGame) {
+    if (state.gameOverDelay === true || state.isAssetLoaded === false) {
+        return;
+    }
+
+    if (state.isStart === false) {
+        hideStartMenu();
+        cancelAnimationFrame(state.fallingAnimationId);
+        cancelAnimationFrame(state.backgroundAutoRunId);
+
+        state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 1500);
+
+        sounds.flap.cloneNode().play();
+        state.isStart = true;
+        state.isGameOver = false;
+        state.score = 0;
+        state.bird.velocityY = -5;
+        state.bird.positionY = 100;
+
+        Pipe.clearPipes();
+        Pipe.generatePipes();
+        startGame();
+
+        return;
+    }
+
+    if (state.isPaused === false) {
+        sounds.flap.cloneNode().play();
+        state.bird.velocityY = -10;
     }
 }
