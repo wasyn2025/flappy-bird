@@ -10,6 +10,8 @@ resizeCanvas();
 export const state = {
     isStart: false,
     isGameOver: false,
+    isPaused: false,
+    resumeTimeoutId: false,
     gameOverReason: "",
     gameOverDelay: false,
     score: 0,

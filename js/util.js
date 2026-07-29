@@ -82,7 +82,7 @@ export function updateBirdRotation() {
 // handle pipe generation, check pipe passed bird, and moving pipes
 export function handlePipe() {
     for (let i = 0; i < state.pipes.length; i++) {
-        if (state.pipes[i].x < (canvas.width / 2 - 20) && state.pipes[i].pipeMove === false) {
+        if (state.pipes[i].x < (canvas.width / 2) && state.pipes[i].pipeMove === false) {
             Pipe.generatePipes();
 
             state.pipeGenerated++;

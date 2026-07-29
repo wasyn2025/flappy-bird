@@ -30,8 +30,10 @@ function flap() {
         return;
     }
 
-    sounds.flap.cloneNode().play();
-    state.bird.velocityY = -10;
+    if (state.isPaused === false) {
+        sounds.flap.cloneNode().play();
+        state.bird.velocityY = -10;
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -47,13 +49,34 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.code === "Space") {
             flap();
         }
+
+        if (event.code === "KeyP" && state.isStart === true) {
+            if (state.isPaused === false) {
+                state.isPaused = true;
+                cancelAnimationFrame(state.startGameAnimationId);
+
+                return;
+            }
+
+            if (state.resumeTimeoutId === false) {
+                console.log("You clicked pause again!");
+                state.resumeTimeoutId = setTimeout(() => {
+                    state.isPaused = false;
+                    state.resumeTimeoutId = false;
+                    
+                    requestAnimationFrame(startGame);
+                }, 1000);
+
+                return;
+            }
+        }
     });
 
     canvas.addEventListener("mousedown", (event) => {
         if (event.button === 0) {
             flap();
         }
-    })
+    });
 });
 
 function startGame() {
@@ -102,7 +125,7 @@ function startGame() {
 }
 
 function updateGame() {
-    if (state.isGameOver === false) {
+    if (state.isGameOver === false && state.isPaused === false) {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         Util.moveBackground();
