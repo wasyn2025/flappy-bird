@@ -2,7 +2,7 @@ import * as Draw from "./draw.js";
 import * as Pipe from "./pipe.js";
 import * as Asset from "./asset.js";
 import * as Util from "./util.js";
-import { canvas, context, state, sounds, assets } from "./state.js";
+import { canvas, context, state, sounds, assets, TIMEOUT_COUNTDOWN } from "./state.js";
 
 function flap() {
     if (state.gameOverDelay === true || state.isAssetLoaded === false) {
@@ -53,18 +53,30 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.code === "KeyP" && state.isStart === true) {
             if (state.isPaused === false) {
                 state.isPaused = true;
+                Draw.drawPauseText();
                 cancelAnimationFrame(state.startGameAnimationId);
 
                 return;
             }
 
-            if (state.resumeTimeoutId === false) {
-                console.log("You clicked pause again!");
-                state.resumeTimeoutId = setTimeout(() => {
-                    state.isPaused = false;
-                    state.resumeTimeoutId = false;
-                    
-                    requestAnimationFrame(startGame);
+            if (state.resumeIntervalId === false) {
+                Draw.drawCountdown(state.countdown);
+
+                state.resumeIntervalId = setInterval(() => {
+                    state.countdown--;
+
+                    if (state.countdown === 0) {
+                        clearInterval(state.resumeIntervalId);
+                        requestAnimationFrame(startGame);
+
+                        state.resumeIntervalId = false;
+                        state.isPaused = false;
+                        state.countdown = TIMEOUT_COUNTDOWN;
+
+                        return;
+                    }
+
+                    Draw.drawCountdown(state.countdown);
                 }, 1000);
 
                 return;

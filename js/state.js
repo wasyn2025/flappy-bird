@@ -4,6 +4,7 @@ export const canvas = document.getElementById("game");
 export const context = canvas.getContext("2d");
 export const CANVAS_WIDTH = 370;
 export const CANVAS_HEIGHT = 600;
+export const TIMEOUT_COUNTDOWN = 3;
 
 resizeCanvas();
 
@@ -11,7 +12,8 @@ export const state = {
     isStart: false,
     isGameOver: false,
     isPaused: false,
-    resumeTimeoutId: false,
+    resumeIntervalId: false,
+    countdown: TIMEOUT_COUNTDOWN,
     gameOverReason: "",
     gameOverDelay: false,
     score: 0,

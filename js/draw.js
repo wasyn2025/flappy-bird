@@ -33,7 +33,7 @@ export function drawBackground() {
 export function drawPipe() {
     for (let i = 0; i < state.pipes.length; i++) {
         pipeCollide(state.pipes[i]);
-        
+
         // top pipe
         context.drawImage(
             assets.pipeTop,
@@ -158,4 +158,50 @@ export function triggerScreenFlash() {
     } else {
         cancelAnimationFrame(state.flashAnimationId);
     }
+}
+
+// Draw pause text when game paused
+export function drawPauseText() {
+    context.fillStyle = "rgba(0, 0, 0, 0.5)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.font = "bold 32px 'Jersey 10'";
+    context.fillStyle = "white";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+
+    context.lineWidth = 3;
+    context.strokeStyle = "black";
+    context.strokeText(
+        "GAME PAUSED",
+        canvas.width / 2,
+        canvas.height / 2
+    )
+
+    context.fillText("GAME PAUSED", canvas.width / 2, canvas.height / 2);
+}
+
+// draw countdown animation when user unpause the game
+export function drawCountdown(countdown) {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawBackground();
+    if (state.delayPipeStart === false) drawPipe();
+    drawGround();
+    drawBird();
+    drawScore();
+
+    context.fillStyle = "rgba(0, 0, 0, 0.5)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.font = "bold 40px 'Jersey 10'";
+    context.fillStyle = "white";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+
+    context.lineWidth = 3;
+    context.strokeStyle = "black";
+    context.strokeText(countdown, canvas.width / 2, canvas.height / 2);
+
+    context.fillText(countdown, canvas.width / 2, canvas.height / 2);
 }
