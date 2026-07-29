@@ -1,5 +1,5 @@
-import { canvas, context, state, sounds, assets, CANVAS_WIDTH, CANVAS_HEIGHT } from "./state.js";
-import { drawBackground, drawGround } from "./draw.js";
+import { canvas, context, state, sounds, assets, CANVAS_WIDTH, CANVAS_HEIGHT, TIMEOUT_COUNTDOWN } from "./state.js";
+import { drawBackground, drawGround, drawCountdown, drawPauseText } from "./draw.js";
 import * as Pipe from "./pipe.js";
 
 // Check whether the the bird hit a pipe
@@ -135,4 +135,38 @@ export function resizeCanvas() {
 
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
+}
+
+// will pause the game and display pause and countdown interface
+export function pauseGame(startGame) {
+    if (state.isPaused === false) {
+        state.isPaused = true;
+        drawPauseText();
+        cancelAnimationFrame(state.startGameAnimationId);
+
+        return;
+    }
+
+    if (state.resumeIntervalId === false) {
+        drawCountdown(state.countdown);
+
+        state.resumeIntervalId = setInterval(() => {
+            state.countdown--;
+
+            if (state.countdown === 0) {
+                clearInterval(state.resumeIntervalId);
+                requestAnimationFrame(startGame);
+
+                state.resumeIntervalId = false;
+                state.isPaused = false;
+                state.countdown = TIMEOUT_COUNTDOWN;
+
+                return;
+            }
+
+            drawCountdown(state.countdown);
+        }, 1000);
+
+        return;
+    }
 }
