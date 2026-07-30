@@ -258,7 +258,9 @@ export function restartGame() {
     state.score = config.DEFAULT_SCORE;
     state.isStart = config.IS_START;
     state.isGameOver = config.IS_GAMEOVER;
-    state.isPaused = config.IS_PAUSED
+    state.isPaused = config.IS_PAUSED;
+    state.resumeIntervalId = config.DEFAULT_RESUME_INTERVAL_ID;
+    state.countdown = config.TIMEOUT_COUNTDOWN;
     state.gameOverDelay = true;
     state.gameOverReason = config.GAMEOVER_REASON[3];
 
