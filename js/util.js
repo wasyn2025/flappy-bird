@@ -221,7 +221,7 @@ export function flap(startGame) {
         cancelAnimationFrame(state.fallingAnimationId);
         cancelAnimationFrame(state.backgroundAutoRunId);
 
-        state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 1500);
+        state.delayPipeStartId = setTimeout(() => state.delayPipeStart = false, 2000);
 
         sounds.flap.cloneNode().play();
         state.isStart = true;
