@@ -4,6 +4,7 @@ export const CANVAS_HEIGHT = 600;
 
 // Game stuff configuration state
 export const IS_START = false;
+export const DEFAULT_START_GAME_ANIMATION_ID = false;
 export const IS_GAMEOVER = false;
 export const IS_PAUSED = false;
 export const DEFAULT_RESUME_INTERVAL_ID = false;
@@ -35,8 +36,8 @@ export const BIRD_FALLING_ANIM_ID = null;
 
 // Shaking animation default configuration state
 export const DEFAULT_IS_SHAKING = false;
-export const SHAKE_DURATION = 0;
-export const SHAKE_INTENSITY = 0;
+export const SHAKE_DURATION = 10;
+export const SHAKE_INTENSITY = 10;
 
 // Asset default configuration state
 export const DEFAULT_LOADED_ASSET = 0;

@@ -8,6 +8,7 @@ resizeCanvas();
 
 export const state = {
     isStart: config.IS_START,
+    startGameAnimationId: config.DEFAULT_START_GAME_ANIMATION_ID,
     isGameOver: config.IS_GAMEOVER,
     isPaused: config.IS_PAUSED,
     resumeIntervalId: config.DEFAULT_RESUME_INTERVAL_ID,

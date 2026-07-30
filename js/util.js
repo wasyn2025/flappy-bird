@@ -186,6 +186,7 @@ export function handleGameOver() {
     localStorage.setItem("highscore", state.highscore);
 
     state.isStart = config.IS_START;
+    state.startGameAnimationId = config.DEFAULT_START_GAME_ANIMATION_ID;
     state.gameOverDelay = true;
 
     state.delayPipeStart = config.DEFAULT_IS_DELAY_PIPE_START;
@@ -193,8 +194,6 @@ export function handleGameOver() {
     state.pipeMoveSpeed = config.PIPE_MOVE_SPEED;
 
     state.isShaking = true;
-    state.shakeDuration = 16;
-    state.shakeIntensity = 6;
 
     state.flashAlpha = 0.8;
 

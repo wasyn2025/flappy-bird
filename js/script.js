@@ -46,6 +46,7 @@ function startGame() {
     } else {
         Util.handleGameOver();
     }
+
 }
 
 function updateGame() {
