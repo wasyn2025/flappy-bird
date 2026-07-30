@@ -17,16 +17,16 @@ export function drawBackground() {
         assets.background,
         state.background.positionX,
         0,
-        canvas.width,
-        canvas.height
+        width,
+        height
     );
 
     context.drawImage(
         assets.background,
         state.background.positionX + canvas.width,
         0,
-        canvas.width,
-        canvas.height
+        width,
+        height
     );
 }
 
