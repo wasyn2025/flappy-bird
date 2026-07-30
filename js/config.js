@@ -16,7 +16,7 @@ export const DEFAULT_HIGHSCORE = 0;
 
 // Pipe configuration state
 export const MIN_PIPE_HEIGHT = 20;
-export const PIPE_GAP = 160;
+export const PIPE_GAP = 125;
 export const PIPE_WIDTH = 64;
 export const PIPE_MOVE_SPEED = 2.8;
 export const PIPE_HIT_SENSITIVITY = 10;

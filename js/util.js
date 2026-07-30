@@ -251,7 +251,7 @@ export function restartGame() {
     cancelAnimationFrame(state.startGameAnimationId);
     cancelAnimationFrame(state.backgroundAutoRunId);
     clearInterval(state.resumeIntervalId);
-    clearTimeout(state.delayPipeStart);
+    clearTimeout(state.delayPipeStartId);
 
     document.querySelector("div.startContainer").style.opacity = 1;
 
@@ -266,6 +266,7 @@ export function restartGame() {
 
     state.pipes = [];
     state.delayPipeStart = config.DEFAULT_IS_DELAY_PIPE_START;
+    state.delayPipeStartId = config.DEFAULT_DELAY_PIPE_START_ID;
     state.pipeGenerated = config.DEFAULT_PIPE_GENERATED;
     state.pipeMoveSpeed = config.PIPE_MOVE_SPEED;
 
