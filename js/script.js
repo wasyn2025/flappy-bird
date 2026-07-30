@@ -14,12 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
     state.getHighscore();
 
     window.addEventListener("keydown", (event) => {
-        if (event.code === "Space") {
-            Util.flap(startGame);
-        }   
+        switch (event.code) {
+            case "Space":
+                Util.flap(startGame);
+                break;
 
-        if (event.code === "KeyP" && state.isStart === true) {
-            Util.pauseGame(startGame);
+            case "KeyP":
+                if (state.isStart === true) Util.pauseGame(startGame);
+                break;
+
+            case "KeyR":
+                if (state.isStart === true) Util.restartGame();
+                break;
         }
     });
 
@@ -48,8 +54,8 @@ function updateGame() {
 
         Util.moveBackground();
         Util.moveGround();
-        // Util.updateBirdVelocity();
-        // Util.updateBirdRotation();
+        Util.updateBirdVelocity();
+        Util.updateBirdRotation();
 
         if (state.delayPipeStart === false) Util.handlePipe();
     }

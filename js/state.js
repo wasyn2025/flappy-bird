@@ -1,101 +1,75 @@
 import { resizeCanvas } from "./util.js";
+import * as config from "./config.js";
 
 export const canvas = document.getElementById("game");
 export const context = canvas.getContext("2d");
-export const CANVAS_WIDTH = 370;
-export const CANVAS_HEIGHT = 600;
-export const TIMEOUT_COUNTDOWN = 3;
 
 resizeCanvas();
 
 export const state = {
-    isStart: false,
-    isGameOver: false,
-    isPaused: false,
-    resumeIntervalId: false,
-    countdown: TIMEOUT_COUNTDOWN,
-    gameOverReason: "",
-    gameOverDelay: false,
-    score: 0,
-    highscore: Number(localStorage.getItem("highscore")) || 0,
+    isStart: config.IS_START,
+    isGameOver: config.IS_GAMEOVER,
+    isPaused: config.IS_PAUSED,
+    resumeIntervalId: config.DEFAULT_RESUME_INTERVAL_ID,
+    countdown: config.TIMEOUT_COUNTDOWN,
+    gameOverReason: config.GAMEOVER_REASON[2],
+    gameOverDelay: config.GAMEOVER_DELAY,
+    score: config.DEFAULT_SCORE,
+    highscore: Number(localStorage.getItem("highscore")) || config.DEFAULT_HIGHSCORE,
 
     getHighscore: () => {
         document.querySelector("#highscore").textContent = state.highscore;
     },
 
     pipes: [],
-    minPipeHeight: 20,
-    pipeGap: 160,
-    pipeWidth: 64,
-    pipeMoveSpeed: 2.8,
-    pipeHitSensitivity: 10,
-    pipeGenerated: 0,
-    _pipeSpawnRange: 0,
-    delayPipeStartId: null,
-    delayPipeStart: true,
+    minPipeHeight: config.MIN_PIPE_HEIGHT,
+    pipeGap: config.PIPE_GAP,
+    pipeWidth: config.PIPE_WIDTH,
+    pipeMoveSpeed: config.PIPE_MOVE_SPEED,
+    pipeHitSensitivity: config.PIPE_HIT_SENSITIVITY,
+    pipeGenerated: config.DEFAULT_PIPE_GENERATED,
+    delayPipeStartId: config.DEFAULT_DELAY_PIPE_START_ID,
+    delayPipeStart: config.DEFAULT_IS_DELAY_PIPE_START,
 
     get maxPipeHeight() {
         return canvas.height - this.pipeGap - this.minPipeHeight;
     },
 
-    get pipeDistance() {
-        return (canvas.width / 2) <= 300 ?
-            (canvas.width / 2) - 50 :
-            (canvas.width / 2) + 100;
-    },
-
-    get pipeSpawnPosition() {
-        return canvas.width + (this.pipeWidth * 2)
-    },
-
     // bird state
     bird: {
-        positionX: 100,
-        positionY: 50,
-        velocityY: 0,
-        gravity: 0.6,
-        rotation: 0,
-        width: 38,
-        height: 38
+        positionX: config.BIRD_POSITION_X,
+        positionY: config.BIRD_POSITION_Y,
+        velocityY: config.BIRD_VELOCITY,
+        gravity: config.BIRD_GRAVITY,
+        rotation: config.BIRD_ROTATION,
+        width: config.BIRD_DIMENSION.width,
+        height: config.BIRD_DIMENSION.height
     },
-
-    // bird falling animation state
-    fallingAnimationId: null,
-    _difference: 0,
-
-    get difference() {
-        return this._difference;
-    },
-
-    set difference(birdPositionY) {
-        this._difference = Math.round((canvas.height - 32) - birdPositionY);
-    },
+    fallingAnimationId: config.BIRD_FALLING_ANIM_ID,
 
     // camera shake state animation
-    isShaking: false,
-    shakeDuration: 0,
-    shakeIntensity: 0,
+    isShaking: config.DEFAULT_IS_SHAKING,
+    shakeDuration: config.SHAKE_DURATION,
+    shakeIntensity: config.SHAKE_INTENSITY,
 
     // asset state
-    loadedAsset: 0,
-    isAssetLoaded: false,
+    loadedAsset: config.DEFAULT_LOADED_ASSET,
+    isAssetLoaded: config.DEFAULT_IS_ASSET_LOADED,
 
     // background and ground state
-    background: { positionX: 0, speed: 1 },
+    background: { positionX: config.BACKGROUND_POSITION_X, speed: config.BACKGROUND_SPEED },
+    backgroundAutoRunId: config.DEFAULT_BACKGROUND_AUTO_RUN_ID,
     ground: {
-        positionX: 0,
-        positionY: canvas.height - 16,
-        width: 48,
-        height: 48,
-        speed: 1
+        positionX: config.GROUND_POSITION_X,
+        positionY: config.GROUND_POSITION_Y,
+        width: config.GROUND_DIMENSION.width,
+        height: config.GROUND_DIMENSION.height,
+        speed: config.GROUND_SPEED
     },
 
-    // flicker state
-    flashAlpha: 0,
-    flashAnimationId: null,
-
-    // background auto run state
-    backgroundAutoRunId: null,
+    // flash state
+    flashAlpha: config.FLASH_ALPHA,
+    flashAnimationId: config.DEFAULT_FLASH_ANIMATION_ID,
 };
 
 // sound storage

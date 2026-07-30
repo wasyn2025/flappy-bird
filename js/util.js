@@ -1,6 +1,7 @@
-import { canvas, context, state, sounds, assets, CANVAS_WIDTH, CANVAS_HEIGHT, TIMEOUT_COUNTDOWN } from "./state.js";
+import { canvas, context, state, sounds, assets } from "./state.js";
 import * as Draw from "./draw.js";
 import * as Pipe from "./pipe.js";
+import * as config from "./config.js";
 
 // Check whether the the bird hit a pipe
 export function pipeCollide(pipe) {
@@ -36,9 +37,9 @@ export function isBirdPassed(pipe) {
 
         if (state.score % 10 === 0) {
             sounds.checkpoint.cloneNode().play();
-            state.pipeMoveSpeed = state.pipeMoveSpeed === 3.6 ?
-                Number((state.pipeMoveSpeed + 0.2).toFixed(1)) :
-                state.pipeMoveSpeed;
+            state.pipeMoveSpeed = state.pipeMoveSpeed >= 3.6 ?
+                state.pipeMoveSpeed :
+                Number((state.pipeMoveSpeed + 0.2).toFixed(1));
         } else {
             sounds.score.cloneNode().play();
         }
@@ -121,7 +122,7 @@ export function hideStartMenu() {
 }
 
 export function resizeCanvas() {
-    const aspect = CANVAS_WIDTH / CANVAS_HEIGHT;
+    const aspect = config.CANVAS_WIDTH / config.CANVAS_HEIGHT;
     let width = window.innerHeight * aspect;
     let height = window.innerHeight;
 
@@ -133,8 +134,8 @@ export function resizeCanvas() {
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
 
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
+    canvas.width = config.CANVAS_WIDTH;
+    canvas.height = config.CANVAS_HEIGHT;
 }
 
 // will pause the game and display pause and countdown interface
@@ -148,7 +149,7 @@ export function pauseGame(startGame) {
     }
 
     if (state.resumeIntervalId === false) {
-        Draw.n(state.countdown);
+        Draw.drawCountdown(state.countdown);
 
         state.resumeIntervalId = setInterval(() => {
             state.countdown--;
@@ -159,7 +160,7 @@ export function pauseGame(startGame) {
 
                 state.resumeIntervalId = false;
                 state.isPaused = false;
-                state.countdown = TIMEOUT_COUNTDOWN;
+                state.countdown = config.TIMEOUT_COUNTDOWN;
 
                 return;
             }
@@ -184,26 +185,28 @@ export function handleGameOver() {
 
     localStorage.setItem("highscore", state.highscore);
 
-    state.delayPipeStart = true;
-    state.pipeGenerated = 0;
-    state.pipeMoveSpeed = 2.8;
-    state.isStart = false;
+    state.isStart = config.IS_START;
     state.gameOverDelay = true;
-    state.flashAlpha = 1;
+
+    state.delayPipeStart = config.DEFAULT_IS_DELAY_PIPE_START;
+    state.pipeGenerated = config.DEFAULT_PIPE_GENERATED;
+    state.pipeMoveSpeed = config.PIPE_MOVE_SPEED;
+
     state.isShaking = true;
-    state.shakeDuration = 15;
+    state.shakeDuration = 16;
     state.shakeIntensity = 6;
 
-    state.gameOverReason === "pipe" ?
+    state.flashAlpha = 0.8;
+
+    state.gameOverReason === config.GAMEOVER_REASON[0] ?
         sounds.hitPipe.cloneNode().play() :
         sounds.hitGround.cloneNode().play();
 
     setTimeout(() => sounds.gameOver.cloneNode().play(), 450);
-    setTimeout(() => state.gameOverDelay = false, 2000);
+    setTimeout(() => state.gameOverDelay = config.IS_GAMEOVER_DELAY, config.GAMEOVER_DELAY);
 
-    if (state.gameOverReason === "pipe") {
-        state.difference = state.bird.positionY;
-        state.bird.velocityY = 0;
+    if (state.gameOverReason === config.GAMEOVER_REASON[0]) {
+        state.bird.velocityY = config.BIRD_VELOCITY;
 
         setTimeout(Draw.drawBirdFalling, 100);
     } else {
@@ -225,8 +228,9 @@ export function flap(startGame) {
 
         sounds.flap.cloneNode().play();
         state.isStart = true;
-        state.isGameOver = false;
-        state.score = 0;
+        state.pipeGenerated = config.DEFAULT_PIPE_GENERATED;
+        state.isGameOver = config.IS_GAMEOVER;
+        state.score = config.DEFAULT_SCORE;
         state.bird.velocityY = -5;
         state.bird.positionY = 100;
 
@@ -241,4 +245,44 @@ export function flap(startGame) {
         sounds.flap.cloneNode().play();
         state.bird.velocityY = -10;
     }
+}
+
+export function restartGame() {
+    cancelAnimationFrame(state.startGameAnimationId);
+    cancelAnimationFrame(state.backgroundAutoRunId);
+    clearInterval(state.resumeIntervalId);
+    clearTimeout(state.delayPipeStart);
+
+    document.querySelector("div.startContainer").style.opacity = 1;
+
+    state.score = config.DEFAULT_SCORE;
+    state.isStart = config.IS_START;
+    state.isGameOver = config.IS_GAMEOVER;
+    state.isPaused = config.IS_PAUSED
+    state.gameOverDelay = true;
+    state.gameOverReason = config.GAMEOVER_REASON[3];
+
+    state.pipes = [];
+    state.delayPipeStart = config.DEFAULT_IS_DELAY_PIPE_START;
+    state.pipeGenerated = config.DEFAULT_PIPE_GENERATED;
+    state.pipeMoveSpeed = config.PIPE_MOVE_SPEED;
+
+    state.bird.positionX = config.BIRD_POSITION_X;
+    state.bird.positionY = config.BIRD_POSITION_Y;
+    state.bird.velocityY = config.BIRD_VELOCITY;
+    state.bird.rotation = config.BIRD_ROTATION;
+
+    state.background.positionX = config.BACKGROUND_POSITION_X;
+    state.fallingAnimationId = config.DEFAULT_BACKGROUND_AUTO_RUN_ID;
+    state.delayPipeStartId = config.DEFAULT_DELAY_PIPE_START_ID;
+
+    state.ground.positionX = config.GROUND_POSITION_X;
+    state.ground.positionY = config.GROUND_POSITION_Y;
+
+    setTimeout(() => state.gameOverDelay = config.IS_GAMEOVER_DELAY, config.GAMEOVER_DELAY);
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    Draw.drawBackground();
+    Draw.drawGround();
+    runBackground();
 }
