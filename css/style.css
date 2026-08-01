@@ -19,6 +19,11 @@ body {
     background-size: cover;
 
     background-color: oklch(26.9% 0 none);
+    position: relative;
+}
+
+canvas:hover {
+    cursor: pointer;
 }
 
 .startContainer {
@@ -76,5 +81,93 @@ body {
 
     100% {
         transform: translateY(0);
+    }
+}
+
+.helper-container {
+    color: rgb(210, 210, 210);
+    position: absolute;
+    top: 50px;
+    /* left: 15px; */
+    display: none;
+    flex-direction: column;
+    row-gap: 1rem;
+    white-space: nowrap;
+}
+
+.helper-container>div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.helper-container>div>span {
+    font-size: 2rem;
+    font-family: "Jersey 10", sans-serif;
+}
+
+.icon {
+    display: inline-block;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+.helper-container .heading {
+    border-bottom: 2px solid rgb(210, 210, 210);
+    padding-bottom: .5rem;
+}
+
+.icon-help {
+    background-image: url("/asset/keyboard-letters.png");
+    background-size: 384px 672px;
+    width: 48px;
+    height: 48px;
+    background-position: -192px -240px;
+}
+
+.icon-space {
+    background-image: url("/asset/keyboard-extras.png");
+    background-size: 384px 384px;
+    width: 96px;
+    height: 48px;
+    background-position: -192px -96px;
+}
+
+.icon-click {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.icon-pause {
+    background-image: url("/asset/keyboard-letters.png");
+    background-size: 384px 672px;
+    width: 48px;
+    height: 48px;
+    background-position: -336px -144px;
+}
+
+.icon-restart {
+    background-image: url("/asset/keyboard-letters.png");
+    background-size: 384px 672px;
+    width: 48px;
+    height: 48px;
+    background-position: -48px -192px;
+}
+
+@media (min-width: 1280px) {
+    .helper-container {
+        display: flex;
+        width: 250px;
+        left: 15px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .helper-container {
+        display: flex;
+        width: auto;
+        left: 50px;
     }
 }

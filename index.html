@@ -8,14 +8,38 @@
     <title>🐦 Flappy Bird</title>
 </head>
 
-<body class="body-padding">
+<body>
     <canvas id="game"></canvas>
+
     <div class="startContainer">
         <div class="medalContainer">
             <img src="./asset/trophy.png" alt="medal">
-            <span id="highscore">20</span>
+            <span id="highscore"></span>
         </div>
-        <span>Tap to start</span>
+        <span>Click to start</span>
+    </div>
+
+    <div class="helper-container">
+        <div class="heading">
+            <span class="icon icon-help"></span>
+            <span>Quick Help</span>
+        </div>
+        <div>
+            <span class="icon icon-space"></span>
+            <span>Flap</span>
+        </div>
+        <div style="padding-left: .3rem;">
+            <img src="/asset/click.png" alt="" class="icon-click">
+            <span>Click to flap</span>
+        </div>
+        <div>
+            <span class="icon icon-pause"></span>
+            <span>Pause & Continue</span>
+        </div>
+        <div>
+            <span class="icon icon-restart"></span>
+            <span>Restart</span>
+        </div>
     </div>
 
     <script src="./js/script.js" type="module"></script>

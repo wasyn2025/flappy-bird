@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    window.addEventListener("mousedown", (event) => {
+    canvas.addEventListener("mousedown", (event) => {
         if (event.button === 0) {
             Util.flap(startGame);
         }
