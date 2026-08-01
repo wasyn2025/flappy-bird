@@ -24,9 +24,11 @@ Flappy Bird is a casual game where the player controls a bird that flies through
 - **JavaScript (Vanilla)** – all game logic (no external libraries or frameworks)
 
 ## Folder Structure
+```
 casual-flappy-bird/
 ├── index.html          # Main file
 ├── css/                # CSS folder for website styles
 ├── js/                 # Game logic files
 ├── assets/             # Bird, pipe, background images, etc. (optional)
 └── README.md
+```
