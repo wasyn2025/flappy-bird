@@ -37,9 +37,17 @@ export function isBirdPassed(pipe) {
 
         if (state.score % 10 === 0) {
             sounds.checkpoint.cloneNode().play();
-            state.pipeMoveSpeed = state.pipeMoveSpeed >= 3.6 ?
-                state.pipeMoveSpeed :
-                Number((state.pipeMoveSpeed + 0.2).toFixed(1));
+
+            if (state.pipeMoveSpeed <= 4.0) {
+                console.log("Sebelum : " + state.pipeDistance);
+
+                state.pipeMoveSpeed = Number((state.pipeMoveSpeed + 0.2).toFixed(1));
+                state.pipeDistance = state.pipeDistance !== config.DEFAULT_MAX_PIPE_DISTANCE ?
+                    state.pipeDistance += config.DEFAULT_PIPE_DISTANCE :
+                    state.pipeDistance
+
+                console.log("Setelah : " + state.pipeDistance);
+            }
         } else {
             sounds.score.cloneNode().play();
         }
@@ -83,7 +91,7 @@ export function updateBirdRotation() {
 // handle pipe generation, check pipe passed bird, and moving pipes
 export function handlePipe() {
     for (let i = 0; i < state.pipes.length; i++) {
-        if (state.pipes[i].x < (canvas.width / 2 - 30) && state.pipes[i].pipeMove === false) {
+        if (state.pipes[i].x < (canvas.width / 2 - state.pipeDistance) && state.pipes[i].pipeMove === false) {
             Pipe.generatePipes();
 
             state.pipeGenerated++;

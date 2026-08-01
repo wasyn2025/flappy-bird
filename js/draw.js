@@ -33,7 +33,7 @@ export function drawBackground() {
 // Draw pipe objects with the updated position
 export function drawPipe() {
     for (let i = 0; i < state.pipes.length; i++) {
-        pipeCollide(state.pipes[i]);
+        // pipeCollide(state.pipes[i]);
 
         // top pipe
         context.drawImage(

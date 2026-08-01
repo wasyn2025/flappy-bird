@@ -25,6 +25,7 @@ export const state = {
     pipes: [],
     minPipeHeight: config.MIN_PIPE_HEIGHT,
     pipeGap: config.PIPE_GAP,
+    pipeDistance: config.DEFAULT_PIPE_DISTANCE,
     pipeWidth: config.PIPE_WIDTH,
     pipeMoveSpeed: config.PIPE_MOVE_SPEED,
     pipeHitSensitivity: config.PIPE_HIT_SENSITIVITY,
