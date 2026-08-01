@@ -1,40 +1,32 @@
 # Casual Flappy Bird Game
 
-Game Flappy Bird sederhana yang dibuat menggunakan HTML, CSS, dan JavaScript murni (vanilla JS). Project ini dibuat untuk belajar dasar-dasar game development di browser, mulai dari rendering canvas, physics sederhana, collision detection, sampai score system.
+A simple Flappy Bird game built with pure HTML, CSS, and JavaScript (vanilla JS). This project was created to learn the basics of browser game development, covering canvas rendering, simple physics, collision detection, and a scoring system.
 
-## Deskripsi
+## Description
 
-Flappy Bird adalah game casual di mana pemain mengontrol seekor burung untuk terbang melewati celah di antara pipa-pipa. Burung akan terus jatuh karena gravitasi, dan pemain harus menekan tombol untuk membuatnya terbang ke atas. Game berakhir jika burung menabrak pipa atau tanah.
+Flappy Bird is a casual game where the player controls a bird that flies through gaps between pipes. The bird constantly falls due to gravity, and the player must press a button to make it flap upward. The game ends if the bird hits a pipe or the ground. This project is a lightweight, easy-to-understand reimplementation, suitable for learning the fundamentals of browser game development.
 
-Project ini merupakan implementasi ulang yang ringan dan mudah dipahami, cocok untuk pemula yang ingin mempelajari cara kerja game loop, input handling, dan canvas API.
+## Features
 
-## Fitur
+- Classic Flappy Bird gameplay
+- Simple gravity and jump physics
+- Collision detection between the bird, pipes, and the ground
+- Scoring system that increases each time a pipe is successfully passed
+- High score saved in `localStorage`
+- Responsive design (playable on both desktop and mobile)
+- Easy restart after game over
+- Difficulty that increases as the game progresses
 
-- Gameplay klasik Flappy Bird
-- Physics gravitasi dan lompatan yang sederhana
-- Collision detection antara burung dengan pipa & tanah
-- Sistem skor yang bertambah setiap berhasil melewati pipa
-- High score yang disimpan di `localStorage`
-- Tampilan responsive (bisa dimainkan di desktop maupun mobile)
-- Restart game dengan mudah setelah game over
+## Technologies Used
 
-## Teknologi yang Digunakan
+- **HTML5** – page structure and the `<canvas>` element
+- **CSS3** – layout and visual styling
+- **JavaScript (Vanilla)** – all game logic (no external libraries or frameworks)
 
-- **HTML5** – struktur halaman dan elemen `<canvas>`
-- **CSS3** – styling layout dan tampilan
-- **JavaScript (Vanilla)** – seluruh logika game (tanpa library/framework eksternal)
-
-## Cara Bermain
-
-- **Desktop**: Tekan `Space` atau klik kiri mouse untuk membuat burung terbang
-- **Mobile**: Tap di mana saja pada layar untuk terbang
-- Hindari menabrak pipa atas, pipa bawah, dan tanah
-- Semakin jauh kamu bertahan, semakin tinggi skornya
-
-## Struktur Folder
+## Folder Structure
 casual-flappy-bird/
-├── index.html          # File utama
-├── style.css           # Styling
-├── script.js           # Logika game
-├── assets/             # Gambar burung, pipa, background, dll (opsional)
+├── index.html          # Main file
+├── css/                # CSS folder for website styles
+├── js/                 # Game logic files
+├── assets/             # Bird, pipe, background images, etc. (optional)
 └── README.md
