@@ -171,3 +171,18 @@ canvas:hover {
         left: 50px;
     }
 }
+
+@media (min-width: 1600px) {
+    .startContainer > span {
+        font-size: 2rem;
+    }
+
+    .medalContainer > img {
+        width: 100px;
+    }
+
+    #highscore {
+        font-size: 4.5rem;
+        -webkit-text-stroke: 2px black;
+    }
+}
