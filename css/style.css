@@ -12,6 +12,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background-image: url("../asset/web-background.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
     background-color: oklch(26.9% 0 none);
 }
 
