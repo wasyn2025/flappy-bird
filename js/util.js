@@ -39,14 +39,10 @@ export function isBirdPassed(pipe) {
             sounds.checkpoint.cloneNode().play();
 
             if (state.pipeMoveSpeed <= 4.0) {
-                console.log("Sebelum : " + state.pipeDistance);
-
                 state.pipeMoveSpeed = Number((state.pipeMoveSpeed + 0.2).toFixed(1));
                 state.pipeDistance = state.pipeDistance !== config.DEFAULT_MAX_PIPE_DISTANCE ?
                     state.pipeDistance += config.DEFAULT_PIPE_DISTANCE :
                     state.pipeDistance
-
-                console.log("Setelah : " + state.pipeDistance);
             }
         } else {
             sounds.score.cloneNode().play();
