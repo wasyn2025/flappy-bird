@@ -177,8 +177,7 @@ export function pauseGame(startGame) {
 }
 
 // function that will restart all the related state variable and stop
-// startGame, clear delayPipeStartId, and check a new highscore when
-// the game is over
+// startGame, clear delayPipeStartId, and check the new high score
 export function handleGameOver() {
     cancelAnimationFrame(state.startGameAnimationId);
     clearTimeout(state.delayPipeStartId);
@@ -196,6 +195,7 @@ export function handleGameOver() {
     state.delayPipeStart = config.DEFAULT_IS_DELAY_PIPE_START;
     state.pipeGenerated = config.DEFAULT_PIPE_GENERATED;
     state.pipeMoveSpeed = config.PIPE_MOVE_SPEED;
+    state.pipeDistance = config.DEFAULT_PIPE_DISTANCE;
 
     state.isShaking = true;
 
@@ -272,6 +272,7 @@ export function restartGame() {
     state.delayPipeStartId = config.DEFAULT_DELAY_PIPE_START_ID;
     state.pipeGenerated = config.DEFAULT_PIPE_GENERATED;
     state.pipeMoveSpeed = config.PIPE_MOVE_SPEED;
+    state.pipeDistance = config.DEFAULT_PIPE_DISTANCE;
 
     state.bird.positionX = config.BIRD_POSITION_X;
     state.bird.positionY = config.BIRD_POSITION_Y;

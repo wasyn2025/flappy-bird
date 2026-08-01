@@ -55,8 +55,8 @@ function updateGame() {
 
         Util.moveBackground();
         Util.moveGround();
-        // Util.updateBirdVelocity();
-        // Util.updateBirdRotation();
+        Util.updateBirdVelocity();
+        Util.updateBirdRotation();
 
         if (state.delayPipeStart === false) Util.handlePipe();
     }
